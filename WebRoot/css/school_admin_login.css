@@ -1,0 +1,310 @@
+@CHARSET "UTF-8";
+*{
+	margin: 0;
+	padding: 0;
+	outline:none;
+}
+body {
+	line-height: 1.5em;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #666;
+	text-align:center;
+	background: #fff;
+}
+
+#header_frame{
+	width:100%;
+	height:114px;
+	margin:0 auto;
+	overflow:hidden;
+	background:#19446a url(../images/log2.png) no-repeat 4% 50%;
+}
+#header_frame #school_name{
+	width:1050px;
+	height:50px;
+	float:right;
+	margin-top:25px;
+	background:#FFFFFF url(../images/school_name.jpg) 10% 0% no-repeat;
+}
+
+#header_menu_frame {
+	width: 100%;
+	height: 6px;
+	margin: 0 auto;
+	overflow:hidden;
+	background:#C3C7CA;
+}
+
+
+/* 网页底部样式 */
+#footer_view {
+	width: 100%;
+	margin: 0 auto;
+	background: #111d28;
+	overflow:hidden;
+}
+
+#footer_frame {
+	width: 920px;
+	padding: 20px;
+	margin: 0 auto;
+	color: #828c96;
+	overflow:hidden;
+	background: url(../images/templatemo_footer_bg.jpg) bottom center no-repeat
+}
+
+.footer_email{
+	float:right;
+	text-align:center;
+}
+.footer_email a{
+	color:white;
+	text-decoration:none;
+}
+.footer_links{
+	float:left;
+}
+.footer_links a{
+	color:#828C96;
+	text-decoration:none;
+}
+.footer_links a:hover{
+	color:white;
+}
+
+.frame_title{
+	clear: both;
+	font-size: 18px;
+	color: #dad021;
+	font-weight: bold;	
+	padding: 0 0 10px 0;
+	margin: 0 0 10px 0;
+	background: url(../images/templatemo_banner_divider.jpg) bottom repeat-x;
+}
+.frame_button{
+	width:102px;
+	height:29px;
+	padding-left:25px;
+	
+	font-size:13px;
+	font-weight:bold;
+	line-height:29px;
+	color:white;
+	cursor:pointer;
+	background:url(../images/frame_button0.png) no-repeat;
+}
+.frame_button:hover{
+	background:url(../images/frame_button1.png) no-repeat;
+}
+
+.login_body{
+	width:960px;
+	height:auto;
+	margin: 0 auto;
+	
+	overflow:hidden;
+}
+#body_frame{
+	width:900px;
+	height:360px;
+	margin:30px;
+	
+	overflow:hidden;
+	border:9px solid #d8d7d7;
+	background:white;
+	border-radius:5px;
+	box-shadow:3px 3px 2px #000;
+}
+.frame_left{
+	width:400px;
+	height:320px;
+	float:left;
+	margin-top:20px;
+	margin-left:10px;
+	background:url(../images/school_admin.png) no-repeat;
+}
+.frame_left .left_name{
+	width:100%;
+	height:30px;
+	margin-top:60px;
+	margin-bottom:20px;
+}
+.frame_left .left_login_way{
+	font-size:12px;
+	font-weight:bold;
+	
+	color:red;
+}
+.frame_left div{
+	width:100%;
+	height:30px;
+	
+	color:#665555;
+	line-height:30px;
+	text-align:center;
+	font-size:15px;
+	font-weight:bold;
+	margin-bottom:20px;
+}
+.frame_right{
+	width:400px;
+	height:320px;
+	float:right;
+	margin-top:20px;
+	margin-right:10px;
+}
+
+.frame_name{
+	margin-top:60px;
+	
+	height:36px;
+	font-size:15px;
+	font-weight:bold;
+	line-height:36px;
+	text-align:left;
+	position:relative;
+	margin-left:50px;
+	margin-bottom:20px;
+}
+.text_view_blur{
+	width:200px;
+	height:36px;
+	float:left;
+	background:url(../images/noenter_text_background.png);
+}
+.text_view_focus{
+	width:200px;
+	height:36px;
+	float:left;
+	background:url(../images/enter_text_background.png);
+}
+#user_name{
+	width:180px;
+	height:20px;
+	margin-top:8px;
+	margin-left:10px;
+	line-height:20px;
+	font-size:13px;
+	font-family:Verdana,Tahoma,Arial;
+	border:0 none;/* 解决IE6,7样式不兼容问题 */
+}
+.close_name_out{
+	width:14px;
+	height:14px;
+	position:absolute;
+	top:10px;
+	right:95px;
+	cursor:pointer;
+	display:none;
+	background:url(../image/talkclose.png) no-repeat;
+}
+.close_name_over{
+	width:14px;
+	height:14px;
+	position:absolute;
+	top:10px;
+	right:95px;
+	cursor:pointer;
+	display:none;
+	background:url(../image/talkclose1.png) no-repeat;
+}
+
+.frame_password{
+	height:36px;
+	font-size:15px;
+	font-weight:bold;
+	line-height:36px;
+	text-align:left;
+	margin-left:50px;
+	margin-bottom:20px;
+}
+#user_password{
+	width:180px;
+	height:20px;
+	margin-top:8px;
+	margin-left:10px;
+	line-height:20px;
+	font-size:16px;
+	font-family:Verdana,Tahoma,Arial;
+	border:0 none;
+}
+
+.frame_code{
+	height:37px;
+	font-size:15px;
+	font-weight:bold;
+	line-height:37px;
+	overflow:hidden;
+	margin-left:50px;
+	margin-bottom:20px;
+}
+.inter_code{
+	float:left;
+	margin-left:0px;
+}
+.code_view_blur{
+	width:71px;
+	height:36px;
+	float:left;
+	text-align:left;
+	background:url(../images/noenter_code_view.png);
+}
+.code_view_focus{
+	width:71px;
+	height:36px;
+	float:left;
+	text-align:left;
+	background:url(../images/enter_code_view.png);
+}
+#user_code{
+	width:60px;
+	height:24px;
+	line-height:24px;
+	margin-left:10px;
+	margin-top:8px;
+	font-weight:bold;
+	font-size:18px;
+	font-family:Courier;/*这个字体样式宽度是一样长的*/
+	letter-spacing:2px;
+	border:0 none;
+}
+.login_code{
+	margin-left:20px;
+	width:100px;
+	height:36px;
+	float:left;
+}
+#login_error{
+	height:20px;
+	color:red;
+	font-size:12px;
+	font-weight:bold;
+	line-height:20px;
+	text-align:left;
+	
+	display:none;
+	margin-left:110px;
+	margin-bottom:10px;
+}
+.frame_submit{
+	width:100%;
+	height:30px;
+	text-align:left;
+}
+#inter_submit{
+	margin-left:112px;
+	width:102px;
+	height:29px;
+	
+	font-size:14px;
+	font-weight:bold;
+	text-align:center;
+	line-height:29px;
+	color:white;
+	cursor:pointer;
+	background:url(../images/frame_button0.png) no-repeat;
+}
+#inter_submit:hover{
+	background:url(../images/frame_button1.png) no-repeat;
+}

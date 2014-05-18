@@ -1,0 +1,9 @@
+<form id='project_file_form' target='upload_iframe' class='upload_form' enctype='multipart/form-data' method='post'>
+	<div class='input_frame'>
+		<input type='file' id='project_file_input' class='upload_file_input' hidefocus='hidefocus' name='project_file'/>
+		<input type='text' id='invented_project_file' name='invented_project_file' readonly/>
+		<div class='select_upload'></div>
+	</div>
+	<input type='button' id='file_send_submit' class='upload_submit' value='发送'/>
+	<iframe name='upload_iframe' style='display:none'></iframe>
+</form>

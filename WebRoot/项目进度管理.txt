@@ -1,0 +1,24 @@
+教师课题Problem->>
+1.现在需要处理的是对于教师课题内容详细信息显示页面的操作控制！(还需要后续的操作再设置)
+（根据project的stage信息来确定当前教师页面需要显示的内容状态）
+2.根据当前课题的状态是否允许用户更改当前的课题内容ok
+3.对于上传的JSON数据的格式的对于",等特殊字符的转换时的使用replace()函数转换ok
+4.对于在更改操作中操作更改课题阶段信息内容的操作处理ok
+5.对于IE中window的层次调用问题（IE中无法实现parent的page无法appendChild子页面的div对象）ok
+6.IE中课题阶段创建的拖拽问题处理&starts的更改操作处理问题(IE问题就是多)ok(event.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft))
+7.对于课题的信息内容更新后然后进行下一步跳转时的操作存在问题ok
+IE中的problems(对于课题的难度选择中的样式问题)ok->>现在发现有些IE对于界面的设计上有些让人非常头痛的操作
+//有时有问题有时有没有问题
+//var url = ifIE ? "../ProjectManagerServlet?type=query_detail_project&project_id="+$("projectID").value : "ProjectManagerServlet?type=query_detail_project&project_id="+$("projectID").value;
+
+关于人员查看学校的课题信息的情况-》》
+人物类型                课题状态
+     学生		  已通过审核
+    教师		  已通过审核
+  管理员		 待审核，已通过审核，审核失败
+
+学校管理人员设计->>（要不设计成-》当课题状态为null时，这个只允许管理员调用其他人员无法调用）
+1.设置学校管理人员的登入操作处理ok
+2.为学校管理人员添加一个课题审核操作处理
+2-1.需要更改所有的跳转的url地址
+3.对于学校管理层人员是否允许课题查看学校的还未提交的课题内容
