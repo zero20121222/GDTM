@@ -1,6 +1,7 @@
 package com.GDT.Filter;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -9,35 +10,55 @@ import java.io.IOException;
  * @author zero
  */
 public class UserPowerFilter implements Filter{
-	private static String ENCODING = null; 
-	private static String PARGMA = null;
-	private static String CACHECONTROL = null;
-	private static int EXPIRES = 0;
-	
+	private static String NO_FILTERS[] = null;
+
 	public void destroy() {
-		System.out.println("销毁Filter");
+		System.out.println("UserPowerFilter destroy.");
 	}
 
-	public void doFilter(ServletRequest request, ServletResponse servletresponse,
+	public void doFilter(ServletRequest servletRequest, ServletResponse servletresponse,
 			FilterChain chain) throws IOException, ServletException {
-		request.setCharacterEncoding(ENCODING);
-		
 		HttpServletResponse response = (HttpServletResponse)servletresponse;
-		response.setCharacterEncoding(ENCODING);//设置返回编码方式
-		//设置页面缓存
-		response.setHeader("Pargma", PARGMA);
-		response.setHeader("Cache-Control", CACHECONTROL);
-        response.setDateHeader("Expires", EXPIRES);
+
+        HttpServletRequest request = (HttpServletRequest)servletRequest;
+        String realPath = request.getRequestURL().toString();
+
+        if(!checkPath(realPath)){
+            //学生教师用户是否已登入的判断
+            if(request.getSession().getAttribute("user_id") == null){
+                request.getRequestDispatcher("mainLogin.jsp").forward(request , response);
+            }
+        }
 		
 		chain.doFilter(request, response);
 	}
 
 	public void init(FilterConfig filter) throws ServletException {
-		ENCODING = filter.getInitParameter("ENCODING") == null ? "UTF-8" : filter.getInitParameter("ENCODING");//获取设置的过滤编码方式
-		
-		//设置页面缓存
-		PARGMA = filter.getInitParameter("Pargma") == null ? "no-cache" : filter.getInitParameter("Pargma");
-		CACHECONTROL = filter.getInitParameter("Cache-Control") == null ? "no-cache" : filter.getInitParameter("Cache-Control");
-		EXPIRES = filter.getInitParameter("Expires") == null ? 0 : Integer.parseInt(filter.getInitParameter("Expires"));
+        System.out.println("UserPowerFilter init.");
+
+        String noFilter = filter.getInitParameter("noFilter");
+        if(noFilter != null){
+            NO_FILTERS = noFilter.split(",");
+        }
 	}
+
+    /**
+     * 设置的无需过滤访问的数据
+     * @param realPath 相对路径
+     * @return 返回是否可以访问
+     */
+    private Boolean checkPath(String realPath){
+        Boolean result = false;
+
+        if(NO_FILTERS.length != 0){
+            for(String path : NO_FILTERS){
+                if(realPath.indexOf(path) != -1){
+                    result = true;
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
 }

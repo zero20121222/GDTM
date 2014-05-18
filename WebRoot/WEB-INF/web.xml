@@ -38,7 +38,7 @@
 	<filter>
 		<filter-name>DelayEnviromentFilter</filter-name>
 		<filter-class>com.GDT.Filter.DelayEnviromentFilter</filter-class>
-		
+
 		<init-param>
 			<param-name>delayTime</param-name>
 			<param-value>0</param-value>
@@ -48,6 +48,26 @@
 		<filter-name>DelayEnviromentFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+
+    <!-- 权限过 -->
+    <filter>
+        <filter-name>UserPowerFilter</filter-name>
+        <filter-class>com.GDT.Filter.UserPowerFilter</filter-class>
+
+        <init-param>
+            <param-name>noFilter</param-name>
+            <param-value>SchoolUser/schoolLogin.jsp,SchoolAdmin/schoolAdminLogin.jsp</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>UserPowerFilter</filter-name>
+        <url-pattern>/SchoolUser/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>UserPowerFilter</filter-name>
+        <url-pattern>/SchoolAdmin/*</url-pattern>
+    </filter-mapping>
+
 	<!-- 系统过滤器设置end -->
 	
 	<servlet>
@@ -258,4 +278,13 @@
 	<welcome-file-list>
 	  	<welcome-file>mainLogin.jsp</welcome-file>
 	</welcome-file-list>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404.html</location>
+    </error-page >
+    <error-page>
+        <error-code>500</error-code>
+        <location>/404.html</location>
+    </error-page >
 </web-app>
