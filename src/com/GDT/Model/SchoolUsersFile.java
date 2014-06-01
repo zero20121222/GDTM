@@ -11,6 +11,9 @@ public class SchoolUsersFile {
 	private String path;	//数据源文件路径
 	private String type;	//数据源类型
 	private String ifLoad;	//是否已导入数据到数据库
+    private int loadCount;  //成功导入的用户数量
+    private String createdAt;//创建时间
+    private String filePath; //文件路径
 	
 	public int getId() {
 		return id;
@@ -48,4 +51,24 @@ public class SchoolUsersFile {
 	public void setIfLoad(String ifLoad) {
 		this.ifLoad = ifLoad;
 	}
+
+    public int getLoadCount() {
+        return loadCount;
+    }
+    public void setLoadCount(int loadCount) {
+        this.loadCount = loadCount;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+    public String getFilePath() {
+        return filePath;
+    }
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
 }

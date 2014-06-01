@@ -193,7 +193,7 @@ function check_function(){
 	}else if(request.readyState == 4){
 		if(request.status == 200){//成功
 			var user_id = parseInt(request.responseText);//取得返回信息
-			
+
 			if(user_id > 0){
 				//验证通过
 				login_error.innerText = "验证通过正在登入...";

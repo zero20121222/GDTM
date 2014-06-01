@@ -8,11 +8,13 @@ public class SchoolNew {
 	private int id;				//信息编号
 	private int schoolId;		//学校编号
 	private int senderId;		//发布人员编号
+    private String senderName;  //发布人名称
 	private String title;		//信息标题
 	private String content;		//详细内容
 	private String contentFile;	//详细内容文件名称
 	private String picture;		//图片信息
 	private String time;		//发布时间
+    private String realPath;    //用于转换时的保存路径的确定
 	
 	public int getId() {
 		return id;
@@ -56,10 +58,22 @@ public class SchoolNew {
 	public void setSenderId(int senderId) {
 		this.senderId = senderId;
 	}
+    public String getSenderName() {
+        return senderName;
+    }
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
 	public String getContentFile() {
 		return contentFile;
 	}
 	public void setContentFile(String contentFile) {
 		this.contentFile = contentFile;
 	}
+    public String getRealPath() {
+        return realPath;
+    }
+    public void setRealPath(String realPath) {
+        this.realPath = realPath;
+    }
 }

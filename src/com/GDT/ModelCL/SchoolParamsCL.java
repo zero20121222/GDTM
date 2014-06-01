@@ -338,15 +338,85 @@ public class SchoolParamsCL implements SchoolParamsInterface {
 		
 		return params;
 	}
-	
+
+    /*
+        查询学校系统参数
+     */
 	public SchoolParams querySchoolParams(int schoolId) {
-		// TODO Auto-generated method stub
-		return null;
+        SchoolParams schoolParams = null;
+
+        String sql = "select 学校Id,学校信息公开,课题参与人数上限,课题阶段总时间上限,审核课题人数,审核课题通过数,课题阶段上限,课题阶段下限," +
+                "课题所选次数上限,指导团队上限,是否可更改账户,覆盖用户数据源,通告显示条数 from 学校界面的系统参数设置 where 学校Id=?";
+
+        try{
+            connectObj = new DBConnection();
+            connectObj.getConnection();
+            sta = connectObj.getStatement(sql);
+
+            sta.setInt(1, schoolId);
+            res = connectObj.getQueryResultSet();
+
+            if(res.next()){
+                schoolParams = new SchoolParams();
+                schoolParams.setSchoolId(res.getInt(1));
+                schoolParams.setInforOvert(res.getString(2));
+                schoolParams.setParterUpperLimit(res.getInt(3));
+                schoolParams.setStageUpperTime(res.getInt(4));
+                schoolParams.setAuditNumber(res.getInt(5));
+                schoolParams.setAdoptNumber(res.getInt(6));
+                schoolParams.setStageUpperLimit(res.getInt(7));
+                schoolParams.setStageFloorLimit(res.getInt(8));
+                schoolParams.setProSelectLimit(res.getInt(9));
+                schoolParams.setGuideTeamLimit(res.getInt(10));
+                schoolParams.setUpdateAccount(res.getString(11));
+                schoolParams.setCoverFiles(res.getString(12));
+                schoolParams.setNoticeNum(res.getInt(13));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            connectObj.close();
+        }
+
+		return schoolParams;
 	}
 
+    /*
+        更新学校参数
+     */
 	public Boolean updateSchoolParams(SchoolParams schoolParams) {
-		// TODO Auto-generated method stub
-		return null;
+        Boolean updateRes = false;
+        String sql = "update 学校界面的系统参数设置 set 学校信息公开=?,课题参与人数上限=?,课题阶段总时间上限=?,审核课题人数=?,审核课题通过数=?,课题阶段上限=?,课题阶段下限=?," +
+                "课题所选次数上限=?,指导团队上限=?,是否可更改账户=?,覆盖用户数据源=?,通告显示条数=? where 学校Id=?";
+
+        try{
+            connectObj = new DBConnection();
+            connectObj.getConnection();
+            sta = connectObj.getStatement(sql);
+
+            sta.setString(1, schoolParams.getInforOvert());
+            sta.setInt(2, schoolParams.getParterUpperLimit());
+            sta.setInt(3, schoolParams.getStageUpperTime());
+            sta.setInt(4, schoolParams.getAuditNumber());
+            sta.setInt(5, schoolParams.getAdoptNumber());
+            sta.setInt(6, schoolParams.getStageUpperLimit());
+            sta.setInt(7, schoolParams.getStageFloorLimit());
+            sta.setInt(8, schoolParams.getProSelectLimit());
+            sta.setInt(9, schoolParams.getGuideTeamLimit());
+            sta.setString(10, schoolParams.getUpdateAccount());
+            sta.setString(11, schoolParams.getCoverFiles());
+            sta.setInt(12, schoolParams.getNoticeNum());
+            sta.setInt(13, schoolParams.getSchoolId());
+
+            updateRes = sta.executeUpdate() > 0;
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            connectObj.close();
+        }
+
+        return updateRes;
 	}
 
 }

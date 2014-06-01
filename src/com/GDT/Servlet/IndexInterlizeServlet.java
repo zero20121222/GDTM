@@ -11,10 +11,9 @@ import javax.servlet.http.HttpSession;
 
 import com.GDT.Factory.SchoolManageFactory;
 import com.GDT.Factory.UserFactory;
-import com.GDT.Interface.CommonSUserInterface;
-import com.GDT.Interface.SchoolCollegeInterface;
-import com.GDT.Interface.SchoolManageFactoryInterface;
-import com.GDT.Interface.UserFactoryInterface;
+import com.GDT.Interface.*;
+import com.GDT.Model.CommonSchoolUser;
+import com.GDT.Model.SchoolManageUser;
 
 /*
  * 用户登入后初始化Index页面操作
@@ -36,19 +35,34 @@ public class IndexInterlizeServlet extends HttpServlet {
 		String type = request.getParameter("type");
 		
 		if(type.equals("commonSNews")){//获取学生教师学校最新通知信息操作处理实现
+            int userId = Integer.parseInt((String)session.getAttribute("user_id"));
 			PrintWriter out = response.getWriter();
 			
 			int schoolId = 1;//学校编号后面使用传参获取
 			UserFactoryInterface factory = new UserFactory();
+            CommonSUserInterface userCL = factory.createCommonSUserCL();
+            CommonSchoolUser user = userCL.queryUserInfo(userId);
 			CommonSUserInterface commoncl = factory.createCommonSUserCL();
-			
-			String news = commoncl.querySchoolNews(schoolId);
+
+			String news = commoncl.querySchoolNews(user.getSchoolId());
 			
 			out.print(news);
 			
 			out.close();
 		}else if(type.equals("adminSNews")){//获取管理员学校最新通知信息操作处理实现
-			
+            int adminId = Integer.parseInt((String)session.getAttribute("user_id"));
+
+            UserFactoryInterface factory = new UserFactory();
+            ManageSUserInterface manageCL = factory.createManageSUserCL();
+            SchoolManageUser user = manageCL.queryUserInfo(adminId);
+
+            PrintWriter out = response.getWriter();
+            ManageSUserInterface commonSUserCL = factory.createManageSUserCL();
+            String news = commonSUserCL.querySchoolNews(user.getSchoolId());
+
+            out.print(news);
+
+            out.close();
 		}else if(type.equals("commonSUserNews")){//普通学校用户的最新信息查询
 			PrintWriter out = response.getWriter();
 			int userId = Integer.parseInt((String)session.getAttribute("user_id"));

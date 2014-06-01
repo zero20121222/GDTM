@@ -11,6 +11,7 @@ import com.GDT.Interface.SchoolNewInterface;
 import com.GDT.Model.AdminRequestInfor;
 import com.GDT.Model.ProjectAuditInfor;
 import com.GDT.Model.ProjectInfor;
+import com.GDT.Model.SchoolManageUser;
 import com.GDT.util.DBConnection;
 import com.GDT.util.DBConnectionInterface;
 
@@ -18,7 +19,7 @@ import com.GDT.util.DBConnectionInterface;
  * 学校管理人员对象基本用户处理类
  * @author zero
  */
-public class ManageSUserCL implements ManageSUserInterface{
+public class ManageSUserCL implements ManageSUserInterface {
 	private DBConnectionInterface connectObj = null;
 	private PreparedStatement sta = null;
 	private ResultSet res = null;
@@ -210,10 +211,41 @@ public class ManageSUserCL implements ManageSUserInterface{
 		return user_type;
 	}
 
-	/*
-	 * @see com.GDT.Interface.ManageSUserInterface#querySchoolNews(int)
-	 * 查询学校的最新通知信息操作
-	 */
+    @Override
+    public SchoolManageUser queryUserInfo(int userId) {
+        SchoolManageUser userInfo = null;
+
+        String sql = "select Id,学校Id,用户名,密码,头像,用户类型 from 管理员审核人员账号 where Id=?;";
+
+        try{
+            connectObj = new DBConnection();
+            connectObj.getConnection();
+            sta = connectObj.getStatement(sql);
+            sta.setInt(1, userId);
+
+            res = connectObj.getQueryResultSet();
+            if(res.next()){
+                userInfo = new SchoolManageUser();
+                userInfo.setId(res.getInt(1));
+                userInfo.setSchoolId(res.getInt(2));
+                userInfo.setUserName(res.getString(3));
+                userInfo.setUserPassword(res.getString(4));
+                userInfo.setUserHead(res.getString(5));
+                userInfo.setUserType(res.getString(6));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            connectObj.close();
+        }
+
+        return userInfo;
+    }
+
+    /*
+     * @see com.GDT.Interface.ManageSUserInterface#querySchoolNews(int)
+     * 查询学校的最新通知信息操作
+     */
 	public String querySchoolNews(int schoolId) {
 		NewsFactoryInterface factory = new NewsFactory();
 		SchoolNewInterface newcl = factory.createSchoolNewCL();

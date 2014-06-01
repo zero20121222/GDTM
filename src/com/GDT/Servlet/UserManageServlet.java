@@ -24,6 +24,7 @@ import com.GDT.Model.SchoolAdminer;
 import com.GDT.Model.SchoolAuditer;
 import com.GDT.Model.Student;
 import com.GDT.Model.Teacher;
+import com.GDT.util.UserEventBus;
 
 /*
  * 用户管理servlet类
@@ -157,13 +158,13 @@ public class UserManageServlet extends HttpServlet {
 			request.getRequestDispatcher("UserManageServlet?type=auditer_user_infor").forward(request, response);
 		}else if(type.equals("adminer_user_infor")){
 			int adminer_id = Integer.parseInt((String)session.getAttribute("user_id"));
-			
+
 			UserFactoryInterface userFactory = new UserFactory();
 			SchoolAdminInterface adminCL = userFactory.createSchoolAdminCL();
 			SchoolAdminer infor = adminCL.doSelect(adminer_id);
 			
 			request.setAttribute("adminInfor", infor);
-			request.getRequestDispatcher("SchoolAdmin/adminUserInfor.jsp").forward(request, response);
+			request.getRequestDispatcher("SchoolAdmin/adminerUserInfor.jsp").forward(request, response);
 		}else if(type.equals("come_update_adminer")){//审核人员信息更改
 			int adminer_id = Integer.parseInt((String)session.getAttribute("user_id"));
 			
@@ -173,7 +174,26 @@ public class UserManageServlet extends HttpServlet {
 			
 			request.setAttribute("adminInfor", infor);
 			request.getRequestDispatcher("SchoolAdmin/adminerInforUpdate.jsp").forward(request, response);
-		}else if(type.equals("check_manager_password")){//检验用户输入的密码是否正确
+		}else if(type.equals("update_adminer_infor")){//更改管理人员信息
+            SchoolAdminer admin = new SchoolAdminer();
+            admin.setId(Integer.parseInt((String)session.getAttribute("user_id")));
+            admin.setOffice(request.getParameter("user_office"));
+            admin.setAge(request.getParameter("user_age"));
+            admin.setSex(request.getParameter("user_sex"));
+            admin.setIdCard(request.getParameter("user_card"));
+            admin.setAddress(request.getParameter("user_address"));
+            admin.setPhone(request.getParameter("user_phone"));
+            admin.setEmail(request.getParameter("user_email"));
+            admin.setQq(request.getParameter("user_qq"));
+            admin.setResume(request.getParameter("user_resume"));
+
+            UserFactoryInterface factory = new UserFactory();
+            SchoolAdminInterface adminCL = factory.createSchoolAdminCL();
+            Boolean result = adminCL.doAlter(admin);
+
+            request.setAttribute("update_result", result+"");
+            request.getRequestDispatcher("UserManageServlet?type=adminer_user_infor").forward(request, response);
+        }else if(type.equals("check_manager_password")){//检验用户输入的密码是否正确
 			int managerId = Integer.parseInt((String)session.getAttribute("user_id"));
 			String oldPassword = (String)request.getParameter("old_password");
 			

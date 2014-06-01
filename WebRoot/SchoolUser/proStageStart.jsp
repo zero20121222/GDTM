@@ -340,15 +340,16 @@ input[type="text"]{
 <script>
 var manageTeam = null;
 function init(){
+    suit_Page();
 	if($("teamer_infors_out").offsetHeight < 350){
-		var iframe_name = "main_body";
-		var frame = parent.document.getElementById(iframe_name);
-		
-		frame.style.marginTop = 0;
-		frame.style.marginBottom = 0;
-		frame.style.height = document.body.clientHeight+ 30 + "px";
-	}else{
-		suit_Page();
+        var frame = parent.document.getElementById("main_body");
+
+        var winHeight = windowHeight() < 600 ? 686 : windowHeight();
+        var marginlength = (winHeight - (frame.offsetHeight+205))/2 + "px";
+
+        //是登入界面居中显示
+        frame.style.marginTop = marginlength;
+        frame.style.marginBottom = marginlength;
 	}
 	
 	new proStageSchedule($("find_teamer") , $("project_id").value).initObj();

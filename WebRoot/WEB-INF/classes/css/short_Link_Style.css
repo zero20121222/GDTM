@@ -1,0 +1,72 @@
+*{
+	margin:0px;
+	padding:0px;
+}
+.short_link_frame{
+	width:200px;
+	height:200px;
+	position:relative;
+}
+.short_home{
+	position:absolute;
+	
+	width:80px;
+	height:80px;
+	top:60px;
+	left:60px;
+	z-index:1000;
+	background:url("../images/project_home.png");
+	border:1px solid white;
+	border-radius:5px;
+
+	opacity:0.8;
+	filter: alpha(opacity=80);
+}
+.short_select{
+	position:absolute;
+	
+	width:84px;
+	height:84px;
+	top:0px;
+	left:58px;
+	background:url("../images/project_select.png");
+
+	opacity:0.8;
+	filter: alpha(opacity=80);
+}
+.short_team{
+	position:absolute;
+	
+	width:84px;
+	height:84px;
+	top:58px;
+	right:0px;
+	background:url("../images/project_team.png");
+
+	opacity:0.8;
+	filter: alpha(opacity=80);
+}
+.short_manage{
+	position:absolute;
+	
+	width:84px;
+	height:84px;
+	bottom:0px;
+	left:58px;
+	background:url("../images/project_manage.png");
+
+	opacity:0.8;
+	filter: alpha(opacity=80);
+}
+.short_user{
+	position:absolute;
+	
+	width:84px;
+	height:84px;
+	top:58px;
+	left:0px;
+	background:url("../images/project_user.png");
+
+	opacity:0.8;
+	filter: alpha(opacity=80);
+}

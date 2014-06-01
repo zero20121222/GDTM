@@ -30,7 +30,7 @@ body {
 }
 .teamer_infor_body{
 	width:960px;
-	height:auto;
+    min-height:400px;
 	
 	margin:auto;
 	margin-top:30px;
@@ -40,7 +40,7 @@ body {
 }
 #teamer_infors_out{/*这个作为一个隐藏框架对象*/
 	width:924px;
-	height:auto;
+    height:auto;
 	
 	position:relative;
 	margin-left:30px;
@@ -797,7 +797,7 @@ proStageFileObj.prototype.loadStageFiles = function(stageFileObj){
 };
 proStageFileObj.prototype.fileDownload = function(stageFileObj , fileName){
 	return function(){
-		window.open("FileManageServlet?type=stageFileDownload&team_id="+$("team_id").value+"&stage_id="+$("stage_id").value+"&filename="+fileName , "upload_iframe");
+		window.open("FileManageServlet?type=stageFileDownload&team_id="+$("team_id").value+"&stage_id="+$("stage_id").value+"&filename="+encodeURI(encodeURI(fileName)) , "upload_iframe");
 	};
 };
 proStageFileObj.prototype.closeClick = function(parentObj){

@@ -17,6 +17,7 @@ public class SchoolParams {
 	private int guideTeamLimit;		//指导团队上限
 	private String updateAccount;	//是否可更改账户
 	private String coverFiles;		//是否覆盖用户数据源文件|数据库链接
+    private int noticeNum;          //学校通告信息显示条数
 	
 	public int getStageUpperTime() {
 		return stageUpperTime;
@@ -90,4 +91,10 @@ public class SchoolParams {
 	public void setParterUpperLimit(int parterUpperLimit) {
 		this.parterUpperLimit = parterUpperLimit;
 	}
+    public int getNoticeNum() {
+        return noticeNum;
+    }
+    public void setNoticeNum(int noticeNum) {
+        this.noticeNum = noticeNum;
+    }
 }

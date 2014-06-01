@@ -5,6 +5,7 @@ import java.util.List;
 import com.GDT.Model.AdminRequestInfor;
 import com.GDT.Model.ProjectAuditInfor;
 import com.GDT.Model.ProjectInfor;
+import com.GDT.Model.SchoolManageUser;
 
 /**
  * 学校管理人员用户接口对象
@@ -33,6 +34,14 @@ public interface ManageSUserInterface extends UserInterface{
 	 * 返回用户的类型信息
 	 */
 	public String queryUserType(int userId);
+
+    /**
+     * 通过用户编号获取用户信息
+     * @param userId    用户编号
+     * @return  SchoolManageUser
+     * 返回管理员信息
+     */
+    public SchoolManageUser queryUserInfo(int userId);
 	
 	/**
 	 * 学校管理用户查看最新信息

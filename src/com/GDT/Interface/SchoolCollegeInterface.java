@@ -36,7 +36,7 @@ public interface SchoolCollegeInterface {
 	 * @return Boolean
 	 * 返回学校院系信息删除是否保存成功(true:更改成功,false:更改失败)
 	 */
-	public Boolean deleteSchoolCollege(int SchoolId , String collegeName);
+	public Boolean deleteSchoolCollege(int schoolId , String collegeName);
 	
 	/**
 	 * 查询院系的全部专业名称
@@ -47,7 +47,7 @@ public interface SchoolCollegeInterface {
 	 * @return String
 	 * 返回一个学校的学院的专业详细信息的JSON字符串
 	 */
-	public String querySchoolCollege(int SchoolId , String collegeName);
+	public SchoolCollege querySchoolCollege(int schoolId , String collegeName);
 	
 	/**
 	 * 查询学校的全部院系信息
@@ -56,7 +56,7 @@ public interface SchoolCollegeInterface {
 	 * @return String
 	 * 返回一个学校的全部学院的专业详细信息的JSON字符串
 	 */
-	public String querySchoolColleges(int SchoolId);
+	public String querySchoolColleges(int schoolId);
 	
 	/**
 	 * 查询学校的全部院系信息

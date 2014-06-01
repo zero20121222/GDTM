@@ -5,7 +5,6 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.net.URLDecoder;
 
 import javax.servlet.ServletException;
@@ -15,14 +14,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.GDT.Factory.NewsFactory;
+import com.GDT.Factory.UserFactory;
+import com.GDT.Interface.*;
+import com.GDT.Model.SchoolManageUser;
+import com.GDT.Model.SchoolNew;
+import com.GDT.Model.SchoolUsersFile;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 
 import com.GDT.Exception.FileFormatException;
 import com.GDT.Factory.ProjectManageFactory;
-import com.GDT.Interface.ProjectInterface;
-import com.GDT.Interface.ProjectManageFactoryInterface;
-import com.GDT.Interface.ProjectStageInterface;
 import com.GDT.Model.TeamStageFile;
 import com.GDT.util.FileUploadCL;
 import com.GDT.util.FileUploadInterface;
@@ -47,21 +49,39 @@ public class FileManageServlet extends HttpServlet {
         String type = request.getParameter("type");
         if(type.equals("schoolNewFile")){//学校最新通知信息文件内容
         	String schoolId = request.getParameter("schoolId");
-        	String newId = request.getParameter("newId");
-        	String fileName = request.getParameter("fileName");
-        	
-        	String path = request.getContextPath();//得到系统根目录名称
-        	//得到系统path
-        	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/"+"Schoolinfor/";
-        	String filePath = basePath+schoolId+"/News/"+newId+"/"+fileName;
+        	int newId = Integer.parseInt(request.getParameter("newId"));
+
+            String path = getServletConfig().getServletContext().getRealPath("/")+"Schoolinfor/";
         	
         	BufferedOutputStream output = null;
         	BufferedInputStream input = null;
-        	try{
+            try{
+                NewsFactoryInterface newsFactory = new NewsFactory();
+                SchoolNewInterface newCL = newsFactory.createSchoolNewCL();
+                SchoolNew schoolNew = newCL.querySchoolNew(newId);
+
+                String fileName = null;
+                if(request.getParameter("downloadWay") != null){
+                    //下载模式
+                    fileName = schoolNew.getContentFile();
+                    //浏览器传输的时候识别的事iso-8859-1编码需要将文件名转码
+                    response.addHeader("Content-Disposition","attachment;filename=" + new String(fileName.getBytes("UTF-8"),"iso-8859-1"));
+                }else{
+                    //显示模式
+                    if(schoolNew.getContentFile().indexOf(".doc") != -1){
+                        fileName = schoolNew.getContentFile().replace(".doc" , ".html");
+                    }else{
+                        fileName = schoolNew.getContentFile();
+                    }
+                }
+
+
+
+                String filePath = path+schoolId+"/News/"+fileName;
 	        	ServletOutputStream servletout = response.getOutputStream();//得到response的输出流对象
 	        	output = new BufferedOutputStream(servletout);
 	        	
-	        	input = new BufferedInputStream(new URL(filePath).openStream());
+	        	input = new BufferedInputStream(new FileInputStream(filePath));
 	        	
 	        	byte[] buffer = new byte[BUFFER_SIZE];
 	        	int bytesRead = 0;
@@ -90,16 +110,16 @@ public class FileManageServlet extends HttpServlet {
         	String oldFileName = URLDecoder.decode(request.getParameter("oldFileName"), "UTF-8");//用于删除的文件名称
 			
         	String path = getServletConfig().getServletContext().getRealPath("/");//得到系统根目录
-			String savePath = path+"ProjectInfor\\"+school_id+"\\"+user_id;
+			String savePath = FileUploadCL.queryFilePath(path , "ProjectInfor", school_id+"", user_id+"");
         	
         	FileUploadInterface fileUpload = new FileUploadCL();
         	try {
         		//删除已上传的阶段文件
         		if(!oldFileName.equals("null")){
-        			fileUpload.deleteUploadFile(savePath+"\\"+oldFileName);
+        			fileUpload.deleteUploadFile(FileUploadCL.queryFilePath(savePath , oldFileName));
         		}
         		
-				String result = fileUpload.uploadPicture(savePath, request);
+				String result = fileUpload.uploadPicture(savePath, FileUploadCL.PICTURE_TYPE, 1024*1024, 120, 150, request);
 				
 				String showPictureUrl = "ProjectInfor/"+school_id+"/"+user_id+"/"+result;//返回图片相对路径
 				out.print("<script>parent.uploadFactory.resultView("+uploadID+" , '图片上传成功!', '"+showPictureUrl+"');</script>");
@@ -121,18 +141,16 @@ public class FileManageServlet extends HttpServlet {
         	String oldFileName = URLDecoder.decode(request.getParameter("oldFileName"), "UTF-8");//用于删除的文件名称
 			
         	String path = getServletConfig().getServletContext().getRealPath("/");//得到系统根目录
-			String savePath = path+"ProjectInfor\\"+school_id+"\\"+user_id;
+			String savePath = FileUploadCL.queryFilePath(path , "ProjectInfor", school_id+"", user_id+"");
         	
         	FileUploadInterface fileUpload = new FileUploadCL();
         	try {
         		//删除已上传的阶段文件
         		if(!oldFileName.equals("null")){
-        			fileUpload.deleteUploadFile(savePath+"\\"+oldFileName);
+        			fileUpload.deleteUploadFile(FileUploadCL.queryFilePath(savePath , oldFileName));
         		}
         		
-				String result = fileUpload.uploadFile(savePath, request);
-				
-				String showPictureUrl = "ProjectInfor/"+school_id+"/"+user_id+"/"+result;//返回图片相对路径
+				fileUpload.uploadFile(savePath, request);
 				out.print("<script>parent.upfileObj.successUpload('文件上传成功!');</script>");
 			} catch (SizeLimitExceededException e) {
 				out.print("<script>parent.upfileObj.errorView('文件最大上传大小为1Mb...');</script>");
@@ -155,17 +173,16 @@ public class FileManageServlet extends HttpServlet {
 			
         	//为了减少后台服务器的压力将上传的旧文件删除
         	String path = getServletConfig().getServletContext().getRealPath("/");//得到系统根目录
-			String savePath = path+"ProjectInfor\\"+school_id+"\\"+user_id+"\\"+project_id;
+			String savePath = FileUploadCL.queryFilePath(path , "ProjectInfor", school_id+"", user_id+"", project_id+"");
 			
         	FileUploadInterface fileUpload = new FileUploadCL();
         	try {
         		//删除已上传的阶段文件
         		if(!oldFileName.equals("null")){
-        			fileUpload.deleteUploadFile(savePath+"\\"+oldFileName);
+        			fileUpload.deleteUploadFile(FileUploadCL.queryFilePath(savePath , oldFileName));
         		}
         		
-				String result = fileUpload.uploadFile(savePath, request);
-				
+				fileUpload.uploadFile(savePath, request);
 				out.print("<script>parent.uploadFactory.resultView("+uploadID+" , '文件上传成功!');</script>");
 			} catch (SizeLimitExceededException e) {
 				out.print("<script>parent.uploadFactory.errorView("+uploadID+" , '文件最大上传大小为1Mb...');</script>");
@@ -186,13 +203,13 @@ public class FileManageServlet extends HttpServlet {
         	String oldFileName = URLDecoder.decode(request.getParameter("oldFileName"), "UTF-8");//用于删除的文件名称
 			
         	String path = getServletConfig().getServletContext().getRealPath("/");//得到系统根目录
-			String savePath = path+"StageFiles\\"+team_id+"\\"+stage_id;
+			String savePath = FileUploadCL.queryFilePath(path , "StageFiles", team_id+"", stage_id+"");
         	
         	FileUploadInterface fileUpload = new FileUploadCL();
         	try {
         		//删除已上传的阶段文件
         		if(!oldFileName.equals("null")){
-        			fileUpload.deleteUploadFile(savePath+"\\"+oldFileName);
+        			fileUpload.deleteUploadFile(FileUploadCL.queryFilePath(savePath , oldFileName));
         		}
         		
         		String[] allowType = {"jpg", "jpeg", "gif","png","doc","docx","txt","xls","ppt","pptx","vsd","tgz","tar","gz","zip","rar"};
@@ -205,7 +222,7 @@ public class FileManageServlet extends HttpServlet {
 					stageFile.setTeamId(team_id);
 					stageFile.setStageId(stage_id);
 					stageFile.setFileName(fileName);
-					stageFile.setFileUrl("StageFiles\\"+team_id+"\\"+stage_id);//文档保存相对路径
+					stageFile.setFileUrl(FileUploadCL.queryFilePath("StageFiles", team_id+"", stage_id+""));//文档保存相对路径
 					stageFile.setSenderId(user_id);
 					
 					ProjectStageInterface stageCL = new ProjectManageFactory().createProjectStageCL();
@@ -290,8 +307,8 @@ public class FileManageServlet extends HttpServlet {
         }else if(type.equals("stageFileDownload")){//下载学生阶段文档信息
         	int team_id = Integer.parseInt((String)request.getParameter("team_id"));
         	int stage_id = Integer.parseInt((String)request.getParameter("stage_id"));
-        	String filename = (String)request.getParameter("filename");
-        	response.addHeader("Content-Disposition","attachment;filename=" + filename);
+        	String filename = URLDecoder.decode(request.getParameter("filename"), "UTF-8");
+        	response.addHeader("Content-Disposition","attachment;filename=" + new String(filename.getBytes("UTF-8"),"iso-8859-1"));
         	
         	BufferedOutputStream output = null;
         	BufferedInputStream input = null;
@@ -322,6 +339,121 @@ public class FileManageServlet extends HttpServlet {
         			input.close();
         		}
         	}
+        }else if(type.equals("userFilesUpLoad")){//学校数据源上传操作
+            response.setContentType("text/html");
+            PrintWriter out = response.getWriter();
+
+            int user_id = Integer.parseInt((String)session.getAttribute("user_id"));
+            String fileType = request.getParameter("fileType");
+            Boolean autoLoad = Boolean.parseBoolean(request.getParameter("autoLoad"));
+            String oldFileName = URLDecoder.decode(request.getParameter("oldFileName"), "UTF-8");//用于删除的文件名称
+
+            UserFactoryInterface factory = new UserFactory();
+            ManageSUserInterface manageCL = factory.createManageSUserCL();
+            SchoolManageUser user = manageCL.queryUserInfo(user_id);
+
+            String path = getServletConfig().getServletContext().getRealPath("/");//得到系统根目录
+            String savePath = FileUploadCL.queryFilePath(path , "Schoolinfor", user.getSchoolId()+"", "UserFiles");
+
+            FileUploadInterface fileUpload = new FileUploadCL();
+            try {
+                if(!oldFileName.equals("null")){
+                    fileUpload.deleteUploadFile(FileUploadCL.queryFilePath(savePath , oldFileName));
+                }
+
+                String[] allowType = {"xls", "xlsx"};
+                //最多上传10MB的文件
+                String fileName = fileUpload.uploadFile(savePath, allowType, 10*1024*1024, request);
+
+                if(!fileName.equals("")){
+                    //记录上传文件数据信息内容
+                    SchoolUsersFile usersFile = new SchoolUsersFile();
+                    usersFile.setSchoolId(user.getSchoolId());
+                    usersFile.setName(fileName);
+                    usersFile.setPath(FileUploadCL.queryFilePath("Schoolinfor", user.getSchoolId()+"", "UserFiles"));
+                    usersFile.setType(fileType);
+
+                    //保存学校数据文档信息
+                    SchoolAdminInterface adminCL = factory.createSchoolAdminCL();
+                    adminCL.saveSchoolUsersFile(usersFile , autoLoad, FileUploadCL.queryFilePath(savePath, fileName));
+                }
+
+                out.print("<script>parent.upfileObj.successUpload('文件上传成功!');</script>");
+            } catch (SizeLimitExceededException e) {
+                out.print("<script>parent.upfileObj.errorView('文件最大上传大小为10Mb...');</script>");
+            } catch (FileFormatException e) {
+                out.print("<script>parent.upfileObj.errorView('文件格式不正确只允许xls&xlsx...');</script>");
+            } catch (FileUploadException e) {
+                out.print("<script>parent.upfileObj.errorView('文件上传异常请确认...');</script>");
+            }finally{
+                out.close();
+            }
+        }else if(type.equals("school_new_file")){//学校通告文件上传
+            response.setContentType("text/html");
+            PrintWriter out = response.getWriter();
+
+            int user_id = Integer.parseInt((String)session.getAttribute("user_id"));
+            String oldFileName = URLDecoder.decode(request.getParameter("oldFileName"), "UTF-8");//用于删除的文件名称
+
+            UserFactoryInterface factory = new UserFactory();
+            ManageSUserInterface manageCL = factory.createManageSUserCL();
+            SchoolManageUser user = manageCL.queryUserInfo(user_id);
+
+            String path = getServletConfig().getServletContext().getRealPath("/");//得到系统根目录
+            String savePath = FileUploadCL.queryFilePath(path , "Schoolinfor", user.getSchoolId()+"", "News");
+
+            FileUploadInterface fileUpload = new FileUploadCL();
+            try {
+                if(!oldFileName.equals("null")){
+                    fileUpload.deleteUploadFile(FileUploadCL.queryFilePath(savePath , oldFileName));
+                }
+
+                //最多上传10MB的文件
+                String fileName = fileUpload.uploadFile(savePath, FileUploadCL.FILE_TYPE, 10*1024*1024, request);
+
+                out.print("<script>parent.upfileObj.successUpload('文件上传成功!');</script>");
+            } catch (SizeLimitExceededException e) {
+                out.print("<script>parent.upfileObj.errorView('文件最大上传大小为10Mb...');</script>");
+            } catch (FileFormatException e) {
+                out.print("<script>parent.upfileObj.errorView('文件格式不正确...');</script>");
+            } catch (FileUploadException e) {
+                out.print("<script>parent.upfileObj.errorView('文件上传异常请确认...');</script>");
+            }finally{
+                out.close();
+            }
+        }else if(type.equals("school_picture_file")){//学校通告图片上传
+            response.setContentType("text/html");
+            PrintWriter out = response.getWriter();
+
+            int user_id = Integer.parseInt((String)session.getAttribute("user_id"));
+            String oldFileName = URLDecoder.decode(request.getParameter("oldFileName"), "UTF-8");//用于删除的文件名称
+
+            UserFactoryInterface factory = new UserFactory();
+            ManageSUserInterface manageCL = factory.createManageSUserCL();
+            SchoolManageUser user = manageCL.queryUserInfo(user_id);
+
+            String path = getServletConfig().getServletContext().getRealPath("/");//得到系统根目录
+            String savePath = FileUploadCL.queryFilePath(path , "Schoolinfor", user.getSchoolId()+"", "News");
+
+            FileUploadInterface fileUpload = new FileUploadCL();
+            try {
+                if(!oldFileName.equals("null")){
+                    fileUpload.deleteUploadFile(FileUploadCL.queryFilePath(savePath , oldFileName));
+                }
+
+                //最多上传1MB的图片
+                String fileName = fileUpload.uploadPicture(savePath, FileUploadCL.PICTURE_TYPE, 1024*1024, 410, 200, request);
+
+                out.print("<script>parent.upPictureObj.successUpload('图片上传成功!');</script>");
+            } catch (SizeLimitExceededException e) {
+                out.print("<script>parent.upPictureObj.errorView('图片最大上传大小为1Mb...');</script>");
+            } catch (FileFormatException e) {
+                out.print("<script>parent.upPictureObj.errorView('图片格式不正确...');</script>");
+            } catch (FileUploadException e) {
+                out.print("<script>parent.upPictureObj.errorView('图片上传异常请确认...');</script>");
+            }finally{
+                out.close();
+            }
         }
 	}
 }

@@ -525,7 +525,7 @@ function setStageName(stageRequest , frame, obj){//设置阶段名称信息
 		}else if(stageRequest.readyState == 4){
 			if(stageRequest.status == 200){
 				var stageObjs = eval(stageRequest.responseText);
-				
+
 				if(stageObjs != null){
 					frame.removeChild(frame.childNodes[0]);//删除等待对象子元素
 					for(var i=0; i<stageObjs.length; i++){
@@ -537,6 +537,13 @@ function setStageName(stageRequest , frame, obj){//设置阶段名称信息
 						var link = new ChildLinkObj(stageObjs[i].stageName , "StageManageServlet?type=query_stage_guide&stageId="+stageObjs[i].stageId+"&teamId="+stageObjs[i].teamId, "main_body", obj.button).createLink();
 						frame.appendChild(link);
 					}
+
+                    if(stageObjs.length == 0){
+                        var loading = document.createElement("div");
+                        loading.className = "loading";
+                        loading.innerHTML = "<span style='color:red'>用户还未创建阶段</span>";
+                        frame.appendChild(loading);
+                    }
 				}
 			}
 		}
@@ -636,7 +643,7 @@ body {
 	background:#19446a url(images/log2.png) no-repeat 4% 50%;
 }
 #header_frame #school_name{
-	width:1050px;
+	width:950px;
 	height:50px;
 	/*这个后期会自动计算长度以及位置的javascript确定*/
 	float:right;
@@ -789,6 +796,23 @@ body {
 .footer_links a:hover{
 	color:white;
 }
+.window_close_out{
+    width:14px;
+    height:14px;
+    margin:8px 5px 0px 0px;
+    cursor:pointer;
+    background:url(../image/talkclose.png) no-repeat;
+}
+.window_close_over{
+    width:14px;
+    height:14px;
+    margin:8px 5px 0px 0px;
+    cursor:pointer;
+    background:url(../image/talkclose1.png) no-repeat;
+}
+a{
+    cursor:pointer;
+}
 </style>
 </head>
 
@@ -805,8 +829,8 @@ body {
 		        <ul>
 		            <li><a href="SchoolUser/body.jsp" id="main_page" target="main_body">主页</a></li>
 		            <li><a href="ProjectManagerServlet?type=enter_projectPage" id="project_page" class="head_link_out" target="main_body">毕业课题管理</a></li>
-		            <li><a href="#" id="teams_page" class="head_link_out" target="main_body">团队管理</a></li>
-		            <li><a href="#" id="audit_page" class="head_link_out" target="main_body">团队阶段审核</a></li>
+		            <li><a id="teams_page" class="head_link_out" target="main_body">团队管理</a></li>
+		            <li><a id="audit_page" class="head_link_out" target="main_body">团队阶段审核</a></li>
 		            <li><a href="UserManageServlet?type=teacher_user_infor" id="userinfor_page" class="head_link_out" target="main_body">用户基本信息</a></li>
 		        </ul>  	
 				<div class="short_link">

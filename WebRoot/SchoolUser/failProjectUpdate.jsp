@@ -742,15 +742,15 @@ proAuditFrameObj.prototype.createFrame = function(auditInfor , stageNum, proAudi
 						+"<tr class='audit_title'><td width='137' align='center'>审核人</td><td width='109' align='center'>审核状态</td>"
 						+"<td width='137' align='center'>审核时间</td><td width='321' align='center'>审核评语</td></tr>"
 						//审核人1
-						+"<tr style='display:"+(auditInfor.auditerName1 == null ? 'none' : '')+";'><td align='center'>"+auditInfor.auditerName1+"</td>"
+						+"<tr style='height:110px;display:"+(auditInfor.auditerName1 == null ? 'none' : '')+";'><td align='center'>"+auditInfor.auditerName1+"</td>"
 						+"<td align='center'><span style='color:"+(auditInfor.deal1=='T' ? 'green' : 'red')+"'>"+(auditInfor.deal1=='T' ? '通过' : '不通过')+"</span></td>"
 						+"<td align='center'>"+proAuditObj.getDateString(new Date(auditInfor.time1))+"</td><td align='left' style='text-indent:20px'>"+auditInfor.remark1+"</td></tr>"
 						//审核人2
-						+"<tr style='background:#EFEFEF;display:"+(auditInfor.auditerName2 == null ? 'none' : '')+";'><td align='center'>"+auditInfor.auditerName2+"</td>"
+						+"<tr style='height:110px;background:#EFEFEF;display:"+(auditInfor.auditerName2 == null ? 'none' : '')+";'><td align='center'>"+auditInfor.auditerName2+"</td>"
 						+"<td align='center'><span style='color:"+(auditInfor.deal2=='T' ? 'green' : 'red')+"'>"+(auditInfor.deal2=='T' ? '通过' : '不通过')+"</span></td>"
 						+"<td align='center'>"+proAuditObj.getDateString(new Date(auditInfor.time2))+"</td><td align='left' style='text-indent:20px'>"+auditInfor.remark2+"</td></tr>"
 						//审核人3
-						+"<tr style='display:"+(auditInfor.auditerName3 == null ? 'none' : '')+";'><td align='center'>"+auditInfor.auditerName3+"</td>"
+						+"<tr style='height:110px;display:"+(auditInfor.auditerName3 == null ? 'none' : '')+";'><td align='center'>"+auditInfor.auditerName3+"</td>"
 						+"<td align='center'><span style='color:"+(auditInfor.deal3=='T' ? 'green' : 'red')+"'>"+(auditInfor.deal3=='T' ? '通过' : '不通过')+"</span></td>"
 						+"<td align='center'>"+proAuditObj.getDateString(new Date(auditInfor.time3))+"</td><td align='left' style='text-indent:20px'>"+auditInfor.remark3+"</td></tr></table>";
 

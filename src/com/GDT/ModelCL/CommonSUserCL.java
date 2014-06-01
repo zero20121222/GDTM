@@ -10,11 +10,7 @@ import com.GDT.Interface.CommonSUserInterface;
 import com.GDT.Interface.NewsFactoryInterface;
 import com.GDT.Interface.STNewsInterface;
 import com.GDT.Interface.SchoolNewInterface;
-import com.GDT.Model.NewInfor;
-import com.GDT.Model.ProjectInfor;
-import com.GDT.Model.ProjectStageGuide;
-import com.GDT.Model.ProjectStageInfor;
-import com.GDT.Model.Student;
+import com.GDT.Model.*;
 import com.GDT.util.DBConnection;
 import com.GDT.util.DBConnectionInterface;
 
@@ -94,10 +90,41 @@ public class CommonSUserCL implements CommonSUserInterface{
 		return userId;
 	}
 
-	/*
-	 * @see com.GDT.Interface.CommonSUserInterface#queryUserType(int)
-	 * @author zero
-	 */
+    @Override
+    public CommonSchoolUser queryUserInfo(int userId) {
+        CommonSchoolUser userInfo = null;
+
+        String sql = "select Id,学校Id,用户名,密码,头像,用户类型 from 学生教师账号 where Id=?;";
+
+        try{
+            connectObj = new DBConnection();
+            connectObj.getConnection();
+            sta = connectObj.getStatement(sql);
+            sta.setInt(1, userId);
+
+            res = connectObj.getQueryResultSet();
+            if(res.next()){
+                userInfo = new CommonSchoolUser();
+                userInfo.setId(res.getInt(1));
+                userInfo.setSchoolId(res.getInt(2));
+                userInfo.setUserName(res.getString(3));
+                userInfo.setUserPassword(res.getString(4));
+                userInfo.setUserHead(res.getString(5));
+                userInfo.setUserType(res.getString(6));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            connectObj.close();
+        }
+
+        return userInfo;
+    }
+
+    /*
+     * @see com.GDT.Interface.CommonSUserInterface#queryUserType(int)
+     * @author zero
+     */
 	public String queryUserType(int userId) {
 		String type = null;
 		String sql = "select 用户类型 from 学生教师账号 where Id=?";

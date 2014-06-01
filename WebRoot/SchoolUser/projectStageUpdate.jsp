@@ -373,9 +373,8 @@ StageCreateWindow.prototype.createWindow = function(stageInfor){
 	  							+"<tr><td align='right'>&nbsp;</td></tr>"
 	  							+"<tr><td align='right'>&nbsp;</td></tr>"
 	  							+"<tr><td align='right'>&nbsp;</td></tr>"
-	  							+"<tr><td align='right'>阶段资料：</td><td><input type='button' class='stage_file_up' name='stage_file_up' title='阶段文件上传'/>"
-	  							+"<input type='button' class='stage_filed' name='stage_filed'/></td>"
-	    						+"<td align='right'>&nbsp;</td><td>&nbsp;</td></tr></table>";
+	  							+"<tr><td align='right'>阶段资料：</td><td colspan='3'><input type='button' class='stage_file_up' name='stage_file_up' title='阶段文件上传'/>"
+	  							+"<input type='button' class='stage_filed' name='stage_filed'/></td></tr></table>";
    	}else{
    		this.stageForm.innerHTML = "<table width='100%' border='0'>"
 	  							+"<tr><td width='25%' align='right'>阶段名称：</td>"
@@ -387,9 +386,8 @@ StageCreateWindow.prototype.createWindow = function(stageInfor){
 	  							+"<tr><td align='right'>&nbsp;</td></tr>"
 	  							+"<tr><td align='right'>&nbsp;</td></tr>"
 	  							+"<tr><td align='right'>&nbsp;</td></tr>"
-	  							+"<tr><td align='right'>阶段资料：</td><td><input type='button' class='stage_file_up' "+(stageInfor.stageFiles == "null" ? "" : "style='display:none'")+" name='stage_file_up' title='阶段文件上传'/>"
-	  							+"<input type='button' class='stage_filed' name='stage_filed' value='"+(stageInfor.stageFiles == "null" ? "" : stageInfor.stageFiles)+"'/></td>"
-	    						+"<td align='right'>&nbsp;</td><td>&nbsp;</td></tr></table>";
+	  							+"<tr><td align='right'>阶段资料：</td><td colspan='3'><input type='button' class='stage_file_up' "+(stageInfor.stageFiles == "null" ? "" : "style='display:none'")+" name='stage_file_up' title='阶段文件上传'/>"
+	  							+"<input type='button' class='stage_filed' name='stage_filed' value='"+(stageInfor.stageFiles == "null" ? "" : stageInfor.stageFiles)+"'/></td></tr></table>";
    	}
    	projectStage.appendChild(this.stageForm);
    	

@@ -3,11 +3,7 @@ package com.GDT.Interface;
 import java.io.OutputStream;
 import java.util.List;
 
-import com.GDT.Model.NewInfor;
-import com.GDT.Model.ProjectInfor;
-import com.GDT.Model.ProjectStageGuide;
-import com.GDT.Model.ProjectStageInfor;
-import com.GDT.Model.Student;
+import com.GDT.Model.*;
 
 /**
  * 普通学校用户接口对象
@@ -17,7 +13,7 @@ public interface CommonSUserInterface extends UserInterface{
 	public final static int NEW_UNTREATED = 0;//信息未处理状态
 	public final static int NEW_TREATED = 1;//信息已处理过的状态
 	public final static int NEW_ALL = 2;//全部信息
-	
+
 	/**
 	 * 用户登入操作处理
 	 * @param schoolId
@@ -30,6 +26,14 @@ public interface CommonSUserInterface extends UserInterface{
 	 * 返回一个用户的用户编号作为身份编号
 	 */
 	public int doLogin(int schoolId , String name, String password);
+
+    /**
+     * 通过用户编号获取用户信息
+     * @param userId    用户编号
+     * @return  SchoolManageUser
+     * 返回管理员信息
+     */
+    public CommonSchoolUser queryUserInfo(int userId);
 	
 	/**
 	 * 获取用户的类型

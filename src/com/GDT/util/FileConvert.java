@@ -245,8 +245,9 @@ public class FileConvert implements FileConvertInterface{
 	
 	public static void main(String args[]){
 		try {
-			new FileConvert().convertFileCode("F://zero3.html", "UTF-8");
-		} catch (IOException e) {
+			//new FileConvert().convertFileCode("F://zero3.html", "UTF-8");
+            new FileConvert().wordConvertHtml("/Users/MichaelZhao/Downloads/赵宇-任务书.doc" , "/Users/MichaelZhao/Downloads/");
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

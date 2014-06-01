@@ -1,12 +1,13 @@
 package com.GDT.util;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
@@ -274,7 +275,8 @@ public class FileUploadCL implements FileUploadInterface{
 	 * @see com.GDT.util.FileUploadInterface#uploadPicture(java.lang.String, java.lang.String[], int, javax.servlet.http.HttpServletRequest)
 	 * 已规定的格式和大小上传图片
 	 */
-	public String uploadPicture(String savePath, String[] allowType, int maxSize, HttpServletRequest request) throws SizeLimitExceededException, FileUploadException, FileFormatException{
+	public String uploadPicture(String savePath, String[] allowType, int maxSize, double width, double height, HttpServletRequest request)
+            throws SizeLimitExceededException, FileUploadException, FileFormatException{
 		String uploadResult = "";
 		
 		DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -312,13 +314,14 @@ public class FileUploadCL implements FileUploadInterface{
 					try{
 						output = new BufferedOutputStream(new FileOutputStream(new File(filepath , filename)));
 						input = fileItem.getInputStream();
-						
-						int length = 0;
-						byte[] buffer = new byte[BUFFSIZE];
-						
-						while((length = input.read(buffer)) != -1){
-							output.write(buffer , 0, length);
-						}
+
+                        //实现压缩
+                        Image src = ImageIO.read(input);
+
+                        BufferedImage tag = new BufferedImage((int)width, (int)height, BufferedImage.TYPE_3BYTE_BGR);
+                        tag.getGraphics().drawImage(src, 0, 0, (int)width, (int)height, null); //绘制缩小后的图
+
+                        ImageIO.write(tag , "png", output);
 					}catch(Exception e){
 						e.printStackTrace();
 					}finally{
@@ -376,4 +379,81 @@ public class FileUploadCL implements FileUploadInterface{
 		
 		return delete;
 	}
+
+    /**
+     * 根据系统的类型创建文件上传路径
+     * @param params    文件数据
+     * @return  String
+     * 返回上传文件路径
+     */
+    public static String queryFilePath(String... params){
+        String filePath = new String();
+
+        String osName = System.getProperty("os.name");
+        if(osName.toLowerCase().indexOf("windows") > -1){
+            //windows系统文件路径
+            for(int i=0; i<params.length; i++){
+                if(i == params.length-1){
+                    filePath += params[i];
+                }else{
+                    if(params[i].lastIndexOf("\\") == params[i].length()-1){
+                        filePath += params[i].substring(0 , params[i].length()-1)+"\\";
+                    }else{
+                        filePath += params[i]+"\\";
+                    }
+                }
+            }
+        }else{
+            //linux系统文件路径
+            for(int i=0; i<params.length; i++){
+                if(i == params.length-1){
+                    filePath += params[i];
+                }else{
+                    if(params[i].lastIndexOf("/") == params[i].length()-1){
+                        filePath += params[i].substring(0 , params[i].length()-1)+"/";
+                    }else{
+                        filePath += params[i]+"/";
+                    }
+                }
+            }
+        }
+
+        return filePath;
+    }
+
+    /**
+     * 实现使用MD5加密算法加密数据
+     * @param transWord 需要转换的文件名称
+     * @return String
+     * 返回转换后的数据
+     */
+    public static String transformMD5(String transWord){
+        String value = null;
+
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("MD5");
+            md.update(transWord.getBytes());
+            value = new String(md.digest());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return value;
+    }
+
+    public static String stringASCII(String s){// 字符串转换为ASCII码
+        String value = new String();
+        if (s == null || "".equals(s)) {
+            return null;
+        }
+
+        char[] chars = transformMD5(s).toCharArray();
+
+        for (int i = 0; i < chars.length; i++) {
+            value += (int)chars[i];
+        }
+
+        return value;
+    }
 }

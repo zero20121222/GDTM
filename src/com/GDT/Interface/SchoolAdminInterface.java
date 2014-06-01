@@ -9,6 +9,9 @@ import com.GDT.Model.SchoolParams;
 import com.GDT.Model.SchoolUsersFile;
 import com.GDT.Model.SchoolUsersLink;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 学校管理人员对象处理接口
  * @author zero
@@ -71,12 +74,12 @@ public interface SchoolAdminInterface{
 	
 	/**
 	 * 分配审核人员账号的功能权限
-	 * @param schoolaudit
+	 * @param schoolAuditor
 	 * 学校课题审核人员账号信息
 	 * @return Boolean
 	 * 返回学校课题审核人员账号创建是否成功
 	 */
-	public Boolean createSchoolAuditer(SchoolManageUser shcoolaudit);
+	public Boolean createSchoolAuditor(SchoolManageUser schoolAuditor);
 	
 	
 	/////////////////////////////////////////		学校管理员对于学校信息的处理控制		////////////////////////////////////////////////////
@@ -109,7 +112,7 @@ public interface SchoolAdminInterface{
 	
 	/**
 	 * 查看学校的信息审核是否通过
-	 * @param schoolId
+	 * @param SchoolId
 	 * 学校编号
 	 * @return String
 	 * 返回学校信息审核的当前状态（w:待审核,t:审核通过,f:审核不通过）
@@ -158,10 +161,22 @@ public interface SchoolAdminInterface{
 	 * 提供数据源文件保存操作
 	 * @param userfile
 	 * 学校用户数据源文件对象
+     * @param autoLoad
+     * 是否自动导入数据到数据库
+     * @param filePath
+     * 文件路径
 	 * @return Boolean
 	 * 返回数据源文件对象保存是否成功(true:成功,false:失败)
 	 */
-	public Boolean saveSchoolUsersFile(SchoolUsersFile userfile);
+	public Boolean saveSchoolUsersFile(SchoolUsersFile userfile , Boolean autoLoad, String filePath);
+
+    /**
+     * 通过学校编号查询上传的资源文件
+     * @param schoolId  学校编号
+     * @return  List
+     * 返回学校资源文件信息列表
+     */
+    public List<SchoolUsersFile> querySchoolUsersFiles(int schoolId);
 	
 	/**
 	 * 提供数据库连接保存操作
@@ -171,4 +186,50 @@ public interface SchoolAdminInterface{
 	 * 返回数据库连接对象保存是否成功(true:成功,false:失败)
 	 */
 	public Boolean saveSchoolUsersLink(SchoolUsersLink userlink);
+
+    /**
+     * 实现查询学校基本学生和教师用户信息
+     * @param schoolId  学校编号
+     * @param pageNo    当前页码
+     * @param pageSize  每页显示数量
+     * @param params    查询参数信息
+     * @return  List
+     * 返回查询到的用户信息
+     */
+    public List<CommonSchoolUser> querySchoolUsers(int schoolId , int pageNo, int pageSize, Map<String , String> params);
+
+    /**
+     * 实现查询学校基本学生和教师用户统计数据
+     * @param schoolId  学校编号
+     * @param pageNo    当前页码
+     * @param pageSize  每页显示数量
+     * @param params    查询参数信息
+     * @return  Map
+     * 返回查询到的用户统计数据
+     */
+    public Map<String , String> querySchoolUserCount(int schoolId, int pageNo, int pageSize, Map<String, String> params);
+
+    /**
+     * 实现查询学校审核人员用户信息
+     * @param schoolId  学校编号
+     * @param pageNo    当前页码
+     * @param pageSize  每页显示数量
+     * @param params    查询参数信息
+     * @return  List
+     * 返回查询到的用户信息
+     */
+    public List<SchoolManageUser> querySchoolAuditors(int schoolId , int pageNo, int pageSize, Map<String , String> params);
+
+    /**
+     * 实现查询学校审核人员的统计数据
+     * @param schoolId  学校编号
+     * @param pageNo    当前页码
+     * @param pageSize  每页显示数量
+     * @param params    查询参数信息
+     * @return  Map
+     * 返回查询到的用户统计数据
+     */
+    public Map<String , String> querySchoolAuditorCount(int schoolId, int pageNo, int pageSize, Map<String, String> params);
+
+    public Boolean existAuditorName(int schoolId , String userName);
 }

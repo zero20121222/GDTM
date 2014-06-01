@@ -634,7 +634,7 @@ slidePS.prototype.loadNotices = function(requestNotice , slideobj){//传入一�
 					obj.style.marginRight = "86px";
 					obj.style.styleFloat = "left";//IE专业
 					obj.style.cssFloat = "left";//非IE浏览器中使用这个
-					obj.style.background = "url(Schoolinfor/"+$("schoolId").value+"/News/"+noticeObjs[i].id+"/"+noticeObjs[i].picture+") no-repeat 50%";
+					obj.style.background = "url(Schoolinfor/"+$("schoolId").value+"/News/"+noticeObjs[i].picture+") no-repeat 50%";
 					
 					var infor_frame = document.createElement("div");
 					infor_frame.className = "infor_frame";
@@ -680,17 +680,10 @@ slidePS.prototype.loadNotices = function(requestNotice , slideobj){//传入一�
 }
 slidePS.prototype.fileClickEvent = function(slideObj , schoolId, newId, file, title){
 	return function(){
-		var filetype = file.split(".")[1].toLowerCase();
-		var url;
-		if(filetype == "doc" || filetype == "html" || filetype == "xls"){//相对于doc这个文件格式系统自动转换成html格式显示
-			//这个是直接调用转换后的html格式的文件显示
-			url = "Schoolinfor/"+schoolId+"/News/"+newId+"/"+file.replace(".doc",".html");
-		}else{
-			//假如不是doc文件则由servlet返回一个数据输出流来到客户端显示
-			url = "FileManageServlet?type=schoolNewFile&schoolId="+schoolId+"&newId="+newId+"&fileName="+file;
-		}
-		
-		var frame = slideObj.existLoadFrameObj(url);
+        var url = "FileManageServlet?type=schoolNewFile&schoolId="+schoolId+"&newId="+newId;
+
+
+        var frame = slideObj.existLoadFrameObj(url);
 		if(frame == null){
 			frame = new LoadFileFrameObj(url , title);
 			slideObj.loadfileFrames.push(frame);
@@ -708,7 +701,8 @@ slidePS.prototype.leftClickEvent = function(slideobj , len){
 		if(slideobj.slide.nowIndex <= 0){
 			$("views_left").style.display = "none";
 			slideobj.changeInfor((slideobj.slide.nowIndex+1) , slideobj.slide.nowIndex);
-		}else if(slideobj.slide.nowIndex < len-1){
+		}
+        if(slideobj.slide.nowIndex < len-1){
 			slideobj.changeInfor((slideobj.slide.nowIndex+1) , slideobj.slide.nowIndex);
 			$("views_right").style.display = "block";
 		}
@@ -721,7 +715,8 @@ slidePS.prototype.rightClickEvent = function(slideobj , len){
 		if(slideobj.slide.nowIndex >= (len-1)){
 			$("views_right").style.display = "none";
 			slideobj.changeInfor((slideobj.slide.nowIndex-1) , slideobj.slide.nowIndex);
-		}else if(slideobj.slide.nowIndex > 0){
+		}
+        if(slideobj.slide.nowIndex > 0){
 			slideobj.changeInfor((slideobj.slide.nowIndex-1) , slideobj.slide.nowIndex);
 			$("views_left").style.display = "block";
 		}
@@ -744,40 +739,64 @@ slidePS.prototype.existLoadFrameObj = function(url){
 //创建一个文件信息显示iframe对象
 var old_loadFileObj;//用于保存旧的对象引用
 function LoadFileFrameObj(url , titleinfor){
-	this.url = url;//文件路径
-	this.titleinfor = titleinfor == null || undefined ? "标题" : titleinfor;
-	this.mWindow = null;//索引移动窗口对象
+    this.url = url;//文件路径
+    this.titleinfor = titleinfor == null || undefined ? "标题" : titleinfor;
+    this.mWindow = null;//索引移动窗口对象
 }
 LoadFileFrameObj.prototype.createFrame = function(){
-	var iframe = parent.document.createElement("iframe");
-	iframe.style.width = "100%";
-	iframe.style.height = "318px";//高度为Window_frame-32
-	//iframe.style.background = "white";
-	iframe.style.border = "0 none";
-	iframe.src = this.url;
-	
-	var titleClose = new Window_close();
-	titleClose.close_Click = this.close_Click;//复写click方法
-	//关闭了
-	var title = new Window_titleview(null , null, new Window_title(this.titleinfor), null, null, false, null, null, titleClose, null);//设置标题信息
-	
-	var margin_Left = (parent.document.body.clientWidth - 800)/2;
-	var frame = new Window_frame(800 , 350, 100, margin_Left, null, null, null, null, null, true);
-	
-	//this.mWindow = new moveWindow(frame , title, false, null, null, new Window_cover(parent.document.body), null);
-	//完美的解决方案（通过输入当前滑动窗口是针对那个页面的来实现操作处理）
-	this.mWindow = new moveWindow(frame , title, false, null, null, null, null, null, parent, null);
-	this.mWindow.create_View();
-	this.mWindow.Win_view.add_Child(iframe);
+    var outFrame = parent.document.createElement("div");
+    outFrame.style.position = "relative";
+
+    var iframe = parent.document.createElement("iframe");
+    iframe.style.width = "100%";
+    iframe.style.height = "318px";//高度为Window_frame-32
+    iframe.style.background = "white";
+    iframe.style.border = "0 none";
+    iframe.src = this.url;
+
+    var downloadView = parent.document.createElement("div");
+    downloadView.style.width = "48px";
+    downloadView.style.height = "48px";
+    downloadView.style.background = "url(images/pro_stage_show.png)";
+    downloadView.style.position = "absolute";
+    downloadView.style.cursor = "pointer";
+    downloadView.style.right = "10px";
+    downloadView.style.bottom = "10px";
+    downloadView.style.zIndex = "10000"
+    downloadView.title = "下载文件";
+
+    addEvent(downloadView , "click" , this.downloadFun(this));
+
+    outFrame.appendChild(iframe);
+    outFrame.appendChild(downloadView);
+
+    var titleClose = new Window_close();
+    titleClose.close_Click = this.close_Click;//复写click方法
+    //关闭了
+    var title = new Window_titleview(null , null, new Window_title(this.titleinfor), null, null, false, null, null, titleClose, null);//设置标题信息
+
+    var margin_Left = (parent.document.body.clientWidth - 800)/2;
+    var frame = new Window_frame(800 , 350, 100, margin_Left, null, null, null, null, null, true);
+
+    //this.mWindow = new moveWindow(frame , title, false, null, null, new Window_cover(parent.document.body), null);
+    //完美的解决方案（通过输入当前滑动窗口是针对那个页面的来实现操作处理）
+    this.mWindow = new moveWindow(frame , title, false, null, null, null, null, null, parent, null);
+    this.mWindow.create_View();
+    this.mWindow.Win_view.add_Child(outFrame);
 };
 LoadFileFrameObj.prototype.close_Click = function(parentObj){
-	return function(){  
-		//判断该对象是否打开了遮罩层
-		if(!parentObj.getParentObj().Win_closeC){
-			parentObj.getParentObj().Win_cover.hiddenView();//隐藏遮罩对象
-		}
-		parentObj.getParentObj().Win_frame.hiddenView();//影藏对象
-	};
+    return function(){
+        //判断该对象是否打开了遮罩层
+        if(!parentObj.getParentObj().Win_closeC){
+            parentObj.getParentObj().Win_cover.hiddenView();//隐藏遮罩对象
+        }
+        parentObj.getParentObj().Win_frame.hiddenView();//影藏对象
+    };
+};
+LoadFileFrameObj.prototype.downloadFun = function(loadObj){
+    return function(){
+        window.open(loadObj.url+"&downloadWay="+true , "upload_iframe");
+    };
 };
 </script>
 <style>

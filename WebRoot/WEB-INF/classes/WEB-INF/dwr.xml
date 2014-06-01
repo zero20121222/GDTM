@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dwr>
+	<allow>
+		<!--这个是dwr提供的一个日志审核过滤器-->
+		<filter class="org.directwebremoting.filter.AuditLogAjaxFilter"/>
+		
+		<!-- 这个创建一个对于页面动态分页操作的处理接口对象&JavaBean对象(先使用这个后期假如需要考录DWR安全问题的话可以转成servlet操作) -->
+		<convert converter="bean" match="com.GDT.Model.ProjectInfor"></convert>
+		<create creator="new" javascript="PagingProject">
+			<param name="class" value="com.GDT.dwrTools.DWRProjectPageing"></param>
+		</create>
+		
+		<create creator="new" javascript="DWRAuditPaging">
+			<param name="class" value="com.GDT.dwrTools.DWRAuditPageing"></param>
+		</create>
+		
+		<create creator="new" javascript="DWRStudentPaging">
+			<param name="class" value="com.GDT.dwrTools.DWRStudentPageing"></param>
+		</create>
+		
+		<!-- 课题阶段的处理类对象以及课题的阶段显示信息内容对象 -->
+		<convert converter="bean" match="com.GDT.Model.ProjectStageInfor"></convert>
+		<convert converter="bean" match="com.GDT.Model.TeamStageFile"></convert>ProjectStageManage
+		<convert converter="bean" match="com.GDT.Model.ProjectStageGuide"></convert>
+		<convert converter="bean" match="com.GDT.Model.ProjectStageManage"></convert>
+		<create creator="new" javascript="ProjectStageDeal">
+			<param name="class" value="com.GDT.dwrTools.DWRProjectStage"></param>
+		</create>
+		
+		<!-- 课题审核信息显示内容对象 -->
+		<convert converter="bean" match="com.GDT.Model.ProjectAuditInfor"></convert>
+		<create creator="new" javascript="ProjectAuditDeal">
+			<param name="class" value="com.GDT.dwrTools.DWRProjectAudit"></param>
+		</create>
+		
+		<!-- 团队信息创建操作对象 -->
+		<convert converter="bean" match="com.GDT.Model.TeamInfor"></convert>
+		<convert converter="bean" match="com.GDT.Model.TeamRelation"></convert>
+		<convert converter="bean" match="com.GDT.Model.Student"></convert>
+		<convert converter="bean" match="com.GDT.Model.Teacher"></convert>
+		<create creator="new" javascript="DWRTeamManage">
+			<param name="class" value="com.GDT.dwrTools.DWRTeamManage"></param>
+		</create>
+	</allow>
+</dwr>

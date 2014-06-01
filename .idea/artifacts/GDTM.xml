@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="GDTM">
+    <output-path>$PROJECT_DIR$/classes/artifacts/GDTM</output-path>
+    <root id="archive" name="GDTM.war">
+      <element id="module-output" name="GDTM" />
+    </root>
+  </artifact>
+</component>

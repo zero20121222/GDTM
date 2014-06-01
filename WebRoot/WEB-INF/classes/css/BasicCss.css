@@ -1,0 +1,217 @@
+@CHARSET "UTF-8";
+/* 基本网页Css样式表 */
+/* 文件上传Css样式表start */
+.upload_submit{
+	width:102px;
+	height:29px;
+	
+	margin-top:auto;
+	margin-left:7px;
+	font-size:13px;
+	font-weight:bold;
+	line-height:29px;
+	color:white;
+	cursor:pointer;
+	background:url(../images/frame_button0.png) no-repeat;
+	border:0px none;
+}
+.upload_submit:hover{
+	background:url(../images/frame_button1.png) no-repeat;
+}
+/* 文件上传Css样式表end */
+
+/* 输入框样式控制start */
+.input_frame{
+	width:195px;
+	height:30px;
+	float:left;
+	position:relative;
+	background:url(../images/input_noenter.png);
+}
+.input_frame_focus{
+	width:195px;
+	height:30px;
+	float:left;
+	position:relative;
+	overflow:hidden;
+	background:url(../images/input_enter.png);
+}
+/* 输入框样式控制end */
+
+/* textarea输入框样式控制start */
+.textarea_frame{
+	position:relative;
+	width:320px;
+	height:90px;
+	background:url(../images/textarea_noenter.png);
+}
+.textarea_frame_focus{
+	position:relative;
+	width:320px;
+	height:90px;
+	background:url(../images/textarea_enter.png);
+}
+.textarea_maxCount{
+	position:absolute;
+	bottom:2px;
+	right:8px;
+	font-size:12px;
+	text-align:center;
+	background:white;
+}
+/* textarea输入框样式控制end */
+
+/* 可移动窗口对象css样式start */
+.window_min_over{
+	width:14px;
+	height:14px;
+	margin:14px 8px 0px 0px;
+	cursor:pointer;
+	background:url(../image/talkmin1.png) no-repeat;
+}
+.window_min_out{
+	width:14px;
+	height:14px;
+	margin:14px 8px 0px 0px;
+	cursor:pointer;
+	background:url(../image/talkmin.png) no-repeat;
+}
+.window_max_out{
+	width:14px;
+	height:14px;
+	margin:8px 8px 0px 0px;
+	cursor:pointer;
+	background:url(../image/window_max.png) no-repeat;
+}
+.window_max_over{
+	width:14px;
+	height:14px;
+	margin:8px 8px 0px 0px;
+	cursor:pointer;
+	background:url(../image/window_max1.png) no-repeat;
+}
+.window_close_out{
+	width:14px;
+	height:14px;
+	margin:8px 5px 0px 0px;
+	cursor:pointer;
+	background:url(../image/talkclose.png) no-repeat;
+}
+.window_close_over{
+	width:14px;
+	height:14px;
+	margin:8px 5px 0px 0px;
+	cursor:pointer;
+	background:url(../image/talkclose1.png) no-repeat;
+}
+/* 可移动窗口对象css样式end */
+
+/* 上传文件组件对象的css样式start */
+.upload_form{
+	position:relative;
+}
+.upload_file_input{
+	position:absolute;
+	width:60px;
+	height:25px;
+	right:-35px;
+	line-height:auto;
+	font-size:13px;
+	
+	filter:alpha(opacity:0);
+	opacity: 0;
+	z-index:1000;
+}
+.select_upload{
+	width:25px;
+	height:25px;
+	position:absolute;
+	right:2px;
+	top:2px;
+	background:url(../images/select_upload_file.png) no-repeat;
+}
+.upload_file_frame{
+	width:320px;
+	height:auto;
+	
+	overflow:hidden;
+	background: white;
+}
+.frame_form_view{
+	width:100%;
+	margin-top:5px;
+	margin-left:10px;
+}
+.frame_error_view{
+	width:100%;
+	height:30px;
+	float:left;
+	line-height:30px;
+}
+.upload_error_infor{
+	color:red;
+	float:left;
+	margin-left:15px;
+	font-size:12px;
+	font-weight:bold;
+}
+.project_result_view{
+	color:green;
+	font-size:12px;
+	font-weight:bold;
+	display:none;
+}
+/* 上传文件组件对象的css样式end */
+
+/* 提示框css样式表 */
+.prompt_button_out{
+	width:102px;
+	height:29px;
+	font-size:13px;
+	font-weight:bold;
+	text-align:center;
+	line-height:29px;
+	color:white;
+	cursor:pointer;
+	position:absolute;
+	top:80px;
+	left:150px;
+	background:url(../images/frame_button0.png) no-repeat;
+}
+.prompt_button_out:hover{
+	background:url(../images/frame_button1.png) no-repeat;
+}
+.prompt_button_out1{
+	width:102px;
+	height:29px;
+	font-size:13px;
+	font-weight:bold;
+	padding-left:30px;
+	line-height:29px;
+	color:white;
+	cursor:pointer;
+	position:absolute;
+	top:100px;
+	left:70px;
+	background:url(../images/frame_button0.png) no-repeat;
+}
+.prompt_button_out1:hover{
+	background:url(../images/frame_button1.png) no-repeat;
+}
+.prompt_button_out2{
+	width:102px;
+	height:29px;
+	font-size:13px;
+	font-weight:bold;
+	padding-left:30px;
+	line-height:29px;
+	color:white;
+	cursor:pointer;
+	position:absolute;
+	top:100px;
+	left:230px;
+	background:url(../images/frame_button0.png) no-repeat;
+}
+.prompt_button_out2:hover{
+	background:url(../images/frame_button1.png) no-repeat;
+}

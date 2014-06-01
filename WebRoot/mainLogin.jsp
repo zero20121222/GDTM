@@ -611,14 +611,12 @@ function slideInfor(){
 	
 	//创建一个连接对象(后期为服务器发送的数据)
 	var newInfor = {
-		infor:[{text:"显示垂直缓动的最新信息",href:"http://www.baidu.com",title:"2013-3-15"},
-			   {text:"显示垂直缓动的最新信息",href:"http://www.baidu.com",title:"2013-3-15"},
-			   {text:"显示垂直缓动的最新信息",href:"http://www.baidu.com",title:"2013-3-15"},
-			   {text:"显示垂直缓动的最新信息",href:"http://www.baidu.com",title:"2013-3-15"},
-			   {text:"显示垂直缓动的最新信息",href:"http://www.baidu.com",title:"2013-3-15"},
-			   {text:"显示垂直缓动的最新信息",href:"http://www.baidu.com",title:"2013-3-15"},
-			   {text:"显示垂直缓动的最新信息",href:"http://www.baidu.com",title:"2013-3-15"},
-			   {text:"显示垂直缓动的最新信息",href:"http://www.baidu.com",title:"2013-3-15"}
+		infor:[{text:"网站最新版本20121222",href:"#",title:"2013-3-15"},
+            {text:"青岛工学院入驻GDT",href:"#",title:"2013-3-15"},
+            {text:"新的名称MichaelZhao",href:"#",title:"2013-3-15"},
+            {text:"最新实现excel导入数据库",href:"#",title:"2013-3-15"},
+            {text:"最新实现word转换成html",href:"#",title:"2013-3-15"},
+            {text:"最新实现Guava的EventBus",href:"#",title:"2013-3-15"}
 		]
 	};
 

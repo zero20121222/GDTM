@@ -1,0 +1,292 @@
+@CHARSET "UTF-8";
+*{
+	margin: 0;
+	padding: 0;
+	outline:none;
+}
+body {
+	line-height: 1.5em;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #666;
+	background: #fff;
+}
+
+#school_news_frame {
+	clear: both;
+	width: 980px;
+	margin: 0 auto;
+	
+	overflow:hidden;
+}
+
+.news_frame {
+	float: left;
+	width: 900px;
+	height: 260px;
+	margin-bottom: 10px;
+	background: #215b8d;
+}
+
+.frame_pictures {
+	float: left;
+	width: 610px;
+	height: 260px;
+	overflow: hidden;	
+	background: #215b8d url(../images/templatemo_slider_right_divider.jpg) right repeat-y;
+}
+
+#frame_infor {
+	float: left;
+	width: 250px;
+	height: 180px;
+	padding: 40px 20px;
+	overflow: hidden;
+	background: #1d4b73;
+}
+.infor_frame{
+	width: 250px;
+	height: 180px;
+}
+
+.frame_inforview{
+	width:250px;
+	height:100px;
+	margin-bottom:10px;
+	
+	word-wrap:break-word;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+.frame_inforview p{
+	color:#CCCCCC;
+	font-size:13px;
+}
+
+#detail_system {
+	float:left;
+	width:608px;
+	height:260px;
+	overflow:hidden;
+	background: #ffffff;
+}
+
+#detail_system p {
+	padding-bottom: 20px;
+}
+
+.system_view{
+	margin:40px 48px 20px 50px;
+}
+
+/* end of content */
+
+
+.title_text{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: #395a7b;
+	margin-bottom:10px;
+}
+.infor_text{
+	font-size: 12px;
+	font-weight: bolde;
+	background: url("../images/ts.gif") no-repeat left top;
+}
+.server_link{
+	text-decoration:none;
+	font-weight: bold;
+	color:#FF6600;
+}
+.service_links{
+	margin-top:20px;
+}
+.service_email{
+	padding-left:20px;
+	background:url("../images/icon-mail.gif") no-repeat left;
+}
+.service_phone{
+	padding-left:20px;
+	background:url("../images/icon-phone.gif") no-repeat left;
+}
+
+
+/* 处理样式也要更改 */
+#main_body {
+	width: 900px;
+	margin: 30px;
+	padding: 9px;
+	
+	
+	overflow:hidden;
+	border: 1px solid #c3c4c5;
+	background: #d8d7d7;
+	border-radius:5px;
+	box-shadow:3px 3px 2px #000;
+}
+
+#detail_frame {
+	width:898px;
+	border:1px solid #c6c5c5;
+	background:#eeeeee;
+}
+
+#infor_news {
+	float: left;
+	width: 290px;
+	height: 260px;
+	overflow:hidden;
+	background: #eeeeee url(../images/content_right_column_bg.jpg) left repeat-y;
+}
+#infor_news .new_titles{
+	width:290px;
+	height:30px;
+	font-size:14px;
+	font-weight:bold;
+	line-height:30px;
+	text-indent:2em;
+	color:#000000;
+	
+	margin-bottom:20px;
+	background: url(../images/templatemo_side_header_bg.jpg) repeat-x;
+}
+#infor_news .new_titles span{
+	font-style:oblique;
+
+	margin-left:10px;
+	color:red;
+}
+
+
+#all_news{
+	height:195px;
+	overflow:hidden;
+	position:relative;
+}
+.news_section {
+	overflow:hidden;
+	height:55px;
+	margin: 0 20px 10px 20px;
+}
+.news_section .new_date{
+	width:50px;
+	height:50px;
+	float:left;
+	cursor:pointer;
+	overflow:hidden;
+	border-radius:5px;
+	box-shadow:3px 3px 2px #000;
+}
+.news_section .new_date .date_day{
+	width:50px;
+	height:35px;
+	line-height:35px;
+	font-size:20px;
+	font-weight:bold;
+	text-align: center;
+	color: #ffffff;
+	background:#307CBF;
+}
+.news_section .new_date .date_year{
+	width:50px;
+	height:15px;
+	line-height:15px;
+	font-size:13px;
+	text-align: center;
+	color: #ffffff;
+	background:#1B466C;
+}
+
+.news_section .news_infor{
+	float:left;
+	
+	margin-left:10px;
+	margin-top:2px;
+	width:180px;
+}
+.news_infor .news_fromname{
+	color:black;
+	font-size:12px;
+	font-weight:bold;
+	font-style:oblique;
+}
+.news_infor .news_fromname a{
+	color:black;
+	margin-left:10px;
+	text-decoration:none;
+	font-style:normal;
+	font-weight:normal;
+}
+
+.frame_title{
+	clear: both;
+	font-size: 17px;
+	line-height:18px;
+	color: #dad021;
+	font-weight: bold;	
+	padding: 0 0 10px 0;
+	margin: 0 0 10px 0;
+	background: url(../images/templatemo_banner_divider.jpg) bottom repeat-x;
+}
+.frame_button{
+	width:102px;
+	height:29px;
+	padding-left:25px;
+	
+	font-size:13px;
+	font-weight:bold;
+	line-height:29px;
+	color:white;
+	cursor:pointer;
+	background:url(../images/frame_button0.png) no-repeat;
+}
+.frame_button:hover{
+	background:url(../images/frame_button1.png) no-repeat;
+}
+
+.views_left_css{
+	width:48px;
+	height:60px;
+	margin-top:100px;
+	margin-left:30px;
+	margin-right:20px;
+	float:left;
+}
+#views_left{
+	width:48px;
+	height:60px;
+	cursor:pointer;
+	display:none;
+	background:url(../images/picture_left.png) no-repeat;
+}
+#views_frame{
+	width:414px;
+	height:204px;
+	position:relative;
+	margin-top:28px;
+	margin-bottom:28px;
+	background:white;
+	float:left;
+}
+.views_right_css{
+	width:48px;
+	height:60px;
+	margin-top:100px;
+	margin-left:20px;
+	margin-right:30px;
+	float:left;
+}
+#views_right{
+	width:48px;
+	height:60px;
+	cursor:pointer;
+	display:none;
+	background:url(../images/picture_right.png) no-repeat;
+}
+#view_picture{
+	width:410px;
+	height:200px;
+	border:2px solid white;
+	background:url('../images/templatemo_image_02.jpg');
+}

@@ -184,7 +184,7 @@ function slidePS(){
 slidePS.prototype.createView = function(){
 	//这一部分时候起对于使用Ajax技术调用后台数据显示的
 	var requestNotice = newXMLHttpRequest();
-	requestNotice.open("post" , "IndexInterlizeServlet?type=commonSNews", true);
+	requestNotice.open("post" , "IndexInterlizeServlet?type=adminSNews", true);
 	requestNotice.onreadystatechange = this.loadNotices(requestNotice , this);
 	$("views_frame").style.background = "url(images/waiting.gif) no-repeat 50%";
 	
@@ -218,7 +218,7 @@ slidePS.prototype.loadNotices = function(requestNotice , slideobj){//传入一�
 					obj.style.marginRight = "86px";
 					obj.style.styleFloat = "left";//IE专业
 					obj.style.cssFloat = "left";//非IE浏览器中使用这个
-					obj.style.background = "url(Schoolinfor/"+$("schoolId").value+"/News/"+noticeObjs[i].id+"/"+noticeObjs[i].picture+") no-repeat 50%";
+					obj.style.background = "url(Schoolinfor/"+$("schoolId").value+"/News/"+noticeObjs[i].picture+") no-repeat 50%";
 					
 					var infor_frame = document.createElement("div");
 					infor_frame.className = "infor_frame";
@@ -264,15 +264,7 @@ slidePS.prototype.loadNotices = function(requestNotice , slideobj){//传入一�
 }
 slidePS.prototype.fileClickEvent = function(slideObj , schoolId, newId, file, title){
 	return function(){
-		var filetype = file.split(".")[1].toLowerCase();
-		var url;
-		if(filetype == "doc" || filetype == "html" || filetype == "xls"){//相对于doc这个文件格式系统自动转换成html格式显示
-			//这个是直接调用转换后的html格式的文件显示
-			url = "Schoolinfor/"+schoolId+"/News/"+newId+"/"+file.replace(".doc",".html");
-		}else{
-			//假如不是doc文件则由servlet返回一个数据输出流来到客户端显示
-			url = "FileManageServlet?type=schoolNewFile&schoolId="+schoolId+"&newId="+newId+"&fileName="+file;
-		}
+		var url = "FileManageServlet?type=schoolNewFile&schoolId="+schoolId+"&newId="+newId;
 		
 		var frame = slideObj.existLoadFrameObj(url);
 		if(frame == null){
@@ -292,7 +284,8 @@ slidePS.prototype.leftClickEvent = function(slideobj , len){
 		if(slideobj.slide.nowIndex <= 0){
 			$("views_left").style.display = "none";
 			slideobj.changeInfor((slideobj.slide.nowIndex+1) , slideobj.slide.nowIndex);
-		}else if(slideobj.slide.nowIndex < len-1){
+		}
+        if(slideobj.slide.nowIndex < len-1){
 			slideobj.changeInfor((slideobj.slide.nowIndex+1) , slideobj.slide.nowIndex);
 			$("views_right").style.display = "block";
 		}
@@ -305,7 +298,8 @@ slidePS.prototype.rightClickEvent = function(slideobj , len){
 		if(slideobj.slide.nowIndex >= (len-1)){
 			$("views_right").style.display = "none";
 			slideobj.changeInfor((slideobj.slide.nowIndex-1) , slideobj.slide.nowIndex);
-		}else if(slideobj.slide.nowIndex > 0){
+		}
+        if(slideobj.slide.nowIndex > 0){
 			slideobj.changeInfor((slideobj.slide.nowIndex-1) , slideobj.slide.nowIndex);
 			$("views_left").style.display = "block";
 		}
@@ -333,13 +327,32 @@ function LoadFileFrameObj(url , titleinfor){
 	this.mWindow = null;//索引移动窗口对象
 }
 LoadFileFrameObj.prototype.createFrame = function(){
+    var outFrame = parent.document.createElement("div");
+    outFrame.style.position = "relative";
+
 	var iframe = parent.document.createElement("iframe");
 	iframe.style.width = "100%";
 	iframe.style.height = "318px";//高度为Window_frame-32
 	iframe.style.background = "white";
 	iframe.style.border = "0 none";
 	iframe.src = this.url;
-	
+
+    var downloadView = parent.document.createElement("div");
+    downloadView.style.width = "48px";
+    downloadView.style.height = "48px";
+    downloadView.style.background = "url(images/pro_stage_show.png)";
+    downloadView.style.position = "absolute";
+    downloadView.style.cursor = "pointer";
+    downloadView.style.right = "10px";
+    downloadView.style.bottom = "10px";
+    downloadView.style.zIndex = "10000"
+    downloadView.title = "下载文件";
+
+    addEvent(downloadView , "click" , this.downloadFun(this));
+
+    outFrame.appendChild(iframe);
+    outFrame.appendChild(downloadView);
+
 	var titleClose = new Window_close();
 	titleClose.close_Click = this.close_Click;//复写click方法
 	//关闭了
@@ -352,7 +365,7 @@ LoadFileFrameObj.prototype.createFrame = function(){
 	//完美的解决方案（通过输入当前滑动窗口是针对那个页面的来实现操作处理）
 	this.mWindow = new moveWindow(frame , title, false, null, null, null, null, null, parent, null);
 	this.mWindow.create_View();
-	this.mWindow.Win_view.add_Child(iframe);
+	this.mWindow.Win_view.add_Child(outFrame);
 };
 LoadFileFrameObj.prototype.close_Click = function(parentObj){
 	return function(){  
@@ -363,299 +376,12 @@ LoadFileFrameObj.prototype.close_Click = function(parentObj){
 		parentObj.getParentObj().Win_frame.hiddenView();//影藏对象
 	};
 };
+LoadFileFrameObj.prototype.downloadFun = function(loadObj){
+    return function(){
+        window.open(loadObj.url+"&downloadWay="+true , "upload_iframe");
+    };
+};
 </script>
-<style>
-/*
-*{
-	margin: 0;
-	padding: 0;
-	outline:none;
-}
-body {
-	line-height: 1.5em;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	color: #666;
-	background: #fff;
-}
-
-#school_news_frame {
-	clear: both;
-	width: 980px;
-	margin: 0 auto;
-	
-	overflow:hidden;
-}
-
-.news_frame {
-	float: left;
-	width: 900px;
-	height: 260px;
-	margin-bottom: 10px;
-	background: #215b8d;
-}
-
-.frame_pictures {
-	float: left;
-	width: 610px;
-	height: 260px;
-	overflow: hidden;	
-	background: url(images/templatemo_slider_right_divider.jpg) right repeat-y;
-}
-
-#frame_infor {
-	float: left;
-	width: 250px;
-	height: 180px;
-	padding: 40px 20px;
-	overflow: hidden;
-	background: #1d4b73;
-}
-.infor_frame{
-	width: 250px;
-	height: 180px;
-}
-
-.frame_inforview{
-	width:250px;
-	height:100px;
-	margin-bottom:10px;
-	
-	word-wrap:break-word;
-	overflow:hidden;
-	text-overflow:ellipsis;
-}
-.frame_inforview p{
-	color:#CCCCCC;
-	font-size:13px;
-}
-
-#detail_system {
-	float:left;
-	width:608px;
-	height:260px;
-	overflow:hidden;
-	background: #ffffff;
-}
-
-#detail_system p {
-	padding-bottom: 20px;
-}
-
-.system_view{
-	margin:40px 48px 20px 50px;
-}
-
-
-
-.title_text{
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-weight: bold;
-	color: #395a7b;
-	margin-bottom:10px;
-}
-.infor_text{
-	font-size: 12px;
-	font-weight: bolde;
-	background: url("images/ts.gif") no-repeat left top;
-}
-.server_link{
-	text-decoration:none;
-	font-weight: bold;
-	color:#FF6600;
-}
-.service_links{
-	margin-top:20px;
-}
-.service_email{
-	padding-left:20px;
-	background:url("images/icon-mail.gif") no-repeat left;
-}
-.service_phone{
-	padding-left:20px;
-	background:url("images/icon-phone.gif") no-repeat left;
-}
-
-
-#main_body {
-	width: 900px;
-	margin: 30px;
-	padding: 9px;
-	
-	
-	overflow:hidden;
-	border: 1px solid #c3c4c5;
-	background: #d8d7d7;
-	border-radius:5px;
-	box-shadow:3px 3px 2px #000;
-}
-
-#detail_frame {
-	width:898px;
-	border:1px solid #c6c5c5;
-	background:#eeeeee;
-}
-
-#infor_news {
-	float: left;
-	width: 290px;
-	height: 260px;
-	overflow:hidden;
-	background: #eeeeee url(images/content_right_column_bg.jpg) left repeat-y;
-}
-#infor_news .new_titles{
-	width:290px;
-	height:30px;
-	font-size:14px;
-	font-weight:bold;
-	line-height:30px;
-	text-indent:2em;
-	color:#000000;
-	
-	margin-bottom:20px;
-	background: url(images/templatemo_side_header_bg.jpg) repeat-x;
-}
-#infor_news .new_titles span{
-	font-style:oblique;
-
-	margin-left:10px;
-	color:red;
-}
-
-
-#all_news{
-	height:195px;
-	overflow:hidden;
-	position:relative;
-}
-.news_section {
-	overflow:hidden;
-	height:55px;
-	margin: 0 20px 10px 20px;
-}
-.news_section .new_date{
-	width:50px;
-	height:50px;
-	float:left;
-	cursor:pointer;
-	overflow:hidden;
-	border-radius:5px;
-	box-shadow:3px 3px 2px #000;
-}
-.news_section .new_date .date_day{
-	width:50px;
-	height:35px;
-	line-height:35px;
-	font-size:20px;
-	font-weight:bold;
-	text-align: center;
-	color: #ffffff;
-	background:#307CBF;
-}
-.news_section .new_date .date_year{
-	width:50px;
-	height:15px;
-	line-height:15px;
-	font-size:13px;
-	text-align: center;
-	color: #ffffff;
-	background:#1B466C;
-}
-
-.news_section .news_infor{
-	float:left;
-	
-	margin-left:10px;
-	margin-top:2px;
-	width:180px;
-}
-.news_infor .news_fromname{
-	color:black;
-	font-size:12px;
-	font-weight:bold;
-	font-style:oblique;
-}
-.news_infor .news_fromname a{
-	color:black;
-	margin-left:10px;
-	text-decoration:none;
-	font-style:normal;
-	font-weight:normal;
-}
-
-.frame_title{
-	clear: both;
-	font-size: 17px;
-	line-height:18px;
-	color: #dad021;
-	font-weight: bold;	
-	padding: 0 0 10px 0;
-	margin: 0 0 10px 0;
-	background: url(images/templatemo_banner_divider.jpg) bottom repeat-x;
-}
-.frame_button{
-	width:102px;
-	height:29px;
-	padding-left:25px;
-	
-	font-size:13px;
-	font-weight:bold;
-	line-height:29px;
-	color:white;
-	cursor:pointer;
-	background:url(images/frame_button0.png) no-repeat;
-}
-.frame_button:hover{
-	background:url(images/frame_button1.png) no-repeat;
-}
-
-.views_left_css{
-	width:48px;
-	height:60px;
-	margin-top:100px;
-	margin-left:30px;
-	margin-right:20px;
-	float:left;
-}
-#views_left{
-	width:48px;
-	height:60px;
-	cursor:pointer;
-	display:none;
-	background:url(images/picture_left.png) no-repeat;
-}
-#views_frame{
-	width:414px;
-	height:204px;
-	position:relative;
-	margin-top:28px;
-	margin-bottom:28px;
-	background: #215b8d;
-	float:left;
-}
-.views_right_css{
-	width:48px;
-	height:60px;
-	margin-top:100px;
-	margin-left:20px;
-	margin-right:30px;
-	float:left;
-}
-#views_right{
-	width:48px;
-	height:60px;
-	cursor:pointer;
-	display:none;
-	background:url(images/picture_right.png) no-repeat;
-}
-#view_picture{
-	width:410px;
-	height:200px;
-	border:2px solid white;
-	background:url('images/templatemo_image_02.jpg');
-}*/
-</style>
 </head>
 
 <body onload="init()">

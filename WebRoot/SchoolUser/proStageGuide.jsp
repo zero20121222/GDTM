@@ -415,6 +415,16 @@ var manageTeam = null;
 var stageMore = null;
 function init(){
 	suit_Page();
+    if($("teamer_infors_out").offsetHeight < 500){
+        var frame = parent.document.getElementById("main_body");
+
+        var winHeight = windowHeight() < 600 ? 686 : windowHeight();
+        var marginlength = (winHeight - (frame.offsetHeight+205))/2 + "px";
+
+        //是登入界面居中显示
+        frame.style.marginTop = marginlength;
+        frame.style.marginBottom = marginlength;
+    }
 	
 	new proStageSchedule($("find_teamer") , $("project_id").value).initObj();
 	new stageAuditObj($("commit_stageAudit")).initObj();
@@ -1075,7 +1085,7 @@ proStageFileObj.prototype.loadStageFiles = function(stageFileObj){
 };
 proStageFileObj.prototype.fileDownload = function(stageFileObj , fileName){
 	return function(){
-		window.open("FileManageServlet?type=stageFileDownload&team_id="+$("team_id").value+"&stage_id="+$("stage_id").value+"&filename="+fileName , "upload_iframe");
+		window.open("FileManageServlet?type=stageFileDownload&team_id="+$("team_id").value+"&stage_id="+$("stage_id").value+"&filename="+encodeURI(encodeURI(fileName)) , "upload_iframe");
 	};
 };
 proStageFileObj.prototype.closeClick = function(parentObj){

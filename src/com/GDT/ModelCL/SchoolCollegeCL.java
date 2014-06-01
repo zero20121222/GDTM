@@ -8,6 +8,7 @@ import com.GDT.Interface.SchoolCollegeInterface;
 import com.GDT.Model.SchoolCollege;
 import com.GDT.util.DBConnection;
 import com.GDT.util.DBConnectionInterface;
+import com.google.common.collect.Lists;
 
 /**
  * 学校院系信息处理类
@@ -17,10 +18,59 @@ public class SchoolCollegeCL implements SchoolCollegeInterface{
 	private DBConnectionInterface connectObj = null;
 	private PreparedStatement sta = null;
 	private ResultSet res = null;
-	
+
+    @Override
 	public Boolean alterSchoolCollege(SchoolCollege college) {
-		// TODO Auto-generated method stub
-		return null;
+        Boolean update = false;
+        String sql = "update 学校院系信息 set ";
+
+        if(college.getMajor1() != null){
+            sql += "专业名称1='"+college.getMajor1()+"',";
+        }
+        if(college.getMajor2() != null){
+            sql += "专业名称2='"+college.getMajor2()+"',";
+        }
+        if(college.getMajor3() != null){
+            sql += "专业名称3='"+college.getMajor3()+"',";
+        }
+        if(college.getMajor4() != null){
+            sql += "专业名称4='"+college.getMajor4()+"',";
+        }
+        if(college.getMajor5() != null){
+            sql += "专业名称5='"+college.getMajor5()+"',";
+        }
+        if(college.getMajor6() != null){
+            sql += "专业名称6='"+college.getMajor6()+"',";
+        }
+        if(college.getMajor7() != null){
+            sql += "专业名称7='"+college.getMajor7()+"',";
+        }
+        if(college.getMajor8() != null){
+            sql += "专业名称8='"+college.getMajor8()+"',";
+        }
+        if(college.getMajor9() != null){
+            sql += "专业名称9='"+college.getMajor9()+"',";
+        }
+        if(college.getMajor10() != null){
+            sql += "专业名称10='"+college.getMajor10()+"',";
+        }
+
+        sql = sql.substring(0 , sql.lastIndexOf(","));
+        sql += " where 学校Id="+college.getSchoolId()+" and 院系名称='"+college.getCollegeName()+"';";
+
+        try{
+            connectObj = new DBConnection();
+            connectObj.getConnection();
+            sta = connectObj.getStatement(sql);
+
+            update = sta.executeUpdate() > 0;
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            connectObj.close();
+        }
+
+        return update;
 	}
 
 	public Boolean deleteSchoolCollege(int SchoolId, String collegeName) {
@@ -28,14 +78,80 @@ public class SchoolCollegeCL implements SchoolCollegeInterface{
 		return null;
 	}
 
-	public List<SchoolCollege> queryAllSchoolCollege(int SchoolId) {
-		// TODO Auto-generated method stub
-		return null;
+    @Override
+	public List<SchoolCollege> queryAllSchoolCollege(int schoolId) {
+        List<SchoolCollege> collegeList = Lists.newArrayList();
+        String sql = "select 院系名称,专业名称1,专业名称2,专业名称3,专业名称4,专业名称5,专业名称6,专业名称7,专业名称8,专业名称9,专业名称10 from 学校院系信息 where 学校Id = ?;";
+
+        try{
+            connectObj = new DBConnection();
+            connectObj.getConnection();
+            sta = connectObj.getStatement(sql);
+            sta.setInt(1, schoolId);
+
+            res = connectObj.getQueryResultSet();
+
+            SchoolCollege schoolCollege;
+            while(res.next()){
+                schoolCollege = new SchoolCollege();
+
+                schoolCollege.setCollegeName(res.getString(1));
+                schoolCollege.setMajor1(res.getString(2));
+                schoolCollege.setMajor2(res.getString(3));
+                schoolCollege.setMajor3(res.getString(4));
+                schoolCollege.setMajor4(res.getString(5));
+                schoolCollege.setMajor5(res.getString(6));
+                schoolCollege.setMajor6(res.getString(7));
+                schoolCollege.setMajor7(res.getString(8));
+                schoolCollege.setMajor8(res.getString(9));
+                schoolCollege.setMajor9(res.getString(10));
+                schoolCollege.setMajor10(res.getString(11));
+                collegeList.add(schoolCollege);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            connectObj.close();
+        }
+
+        return collegeList;
 	}
 
-	public String querySchoolCollege(int SchoolId, String collegeName) {
-		// TODO Auto-generated method stub
-		return null;
+    @Override
+	public SchoolCollege querySchoolCollege(int schoolId, String collegeName) {
+        SchoolCollege schoolCollege = null;
+        String sql = "select 院系名称,专业名称1,专业名称2,专业名称3,专业名称4,专业名称5,专业名称6,专业名称7,专业名称8,专业名称9,专业名称10 from 学校院系信息 where 学校Id=? and 院系名称=?;";
+
+        try{
+            connectObj = new DBConnection();
+            connectObj.getConnection();
+            sta = connectObj.getStatement(sql);
+            sta.setInt(1, schoolId);
+            sta.setString(2 , collegeName);
+
+            res = connectObj.getQueryResultSet();
+            if(res.next()){
+                schoolCollege = new SchoolCollege();
+
+                schoolCollege.setCollegeName(res.getString(1));
+                schoolCollege.setMajor1(res.getString(2));
+                schoolCollege.setMajor2(res.getString(3));
+                schoolCollege.setMajor3(res.getString(4));
+                schoolCollege.setMajor4(res.getString(5));
+                schoolCollege.setMajor5(res.getString(6));
+                schoolCollege.setMajor6(res.getString(7));
+                schoolCollege.setMajor7(res.getString(8));
+                schoolCollege.setMajor8(res.getString(9));
+                schoolCollege.setMajor9(res.getString(10));
+                schoolCollege.setMajor10(res.getString(11));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            connectObj.close();
+        }
+
+        return schoolCollege;
 	}
 	
 	/*

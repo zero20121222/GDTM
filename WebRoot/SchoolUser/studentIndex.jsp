@@ -532,6 +532,7 @@ function setStageName(stageRequest , frame, obj){//设置阶段名称信息
 						var link = new ChildLinkObj(stageObjs[i].stageName , "StageManageServlet?type=query_team_stage&stageId="+stageObjs[i].stageId, "main_body", obj.button).createLink();
 						frame.appendChild(link);
 					}
+                    obj.button.href = "StageManageServlet?type=query_team_stage&stageId="+stageObjs[0].stageId;
 				}
 			}
 		}
@@ -631,7 +632,7 @@ body {
 	background:#19446a url(images/log2.png) no-repeat 4% 50%;
 }
 #header_frame #school_name{
-	width:1050px;
+	width:950px;
 	height:50px;
 	/*这个后期会自动计算长度以及位置的javascript确定*/
 	float:right;
@@ -785,6 +786,23 @@ body {
 .footer_links a:hover{
 	color:white;
 }
+.window_close_out{
+    width:14px;
+    height:14px;
+    margin:8px 5px 0px 0px;
+    cursor:pointer;
+    background:url(../image/talkclose.png) no-repeat;
+}
+.window_close_over{
+    width:14px;
+    height:14px;
+    margin:8px 5px 0px 0px;
+    cursor:pointer;
+    background:url(../image/talkclose1.png) no-repeat;
+}
+a{
+    cursor:pointer;
+}
 </style>
 </head>
 
@@ -802,7 +820,7 @@ body {
 		            <li><a href="SchoolUser/body.jsp" id="main_page" target="main_body">主页</a></li>
 		            <li><a href="ProjectManagerServlet?type=enter_auditedPros" id="select_page" class="head_link_out" target="main_body">毕业课题选择</a></li>
 		            <li><a href="TeamManageServlet?type=query_teamers_infor" id="team_page" class="head_link_out" target="main_body">团队信息</a></li>
-		            <li><a href="#" id="stage_page" class="head_link_out" target="main_body">阶段性管理</a></li>
+		            <li><a id="stage_page" class="head_link_out" target="main_body">阶段性管理</a></li>
 		            <li><a href="UserManageServlet?type=student_user_infor" id="userinfor_page" class="head_link_out" target="main_body">用户基本信息</a></li>
 		        </ul>  	
 				<div class="short_link">

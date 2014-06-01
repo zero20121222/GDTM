@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.GDT.Factory.ProjectManageFactory;
-import com.GDT.Interface.ProjectAuditInterface;
-import com.GDT.Interface.ProjectInterface;
-import com.GDT.Interface.ProjectManageFactoryInterface;
+import com.GDT.Factory.SchoolManageFactory;
+import com.GDT.Factory.UserFactory;
+import com.GDT.Interface.*;
 import com.GDT.Model.ProjectAuditInfor;
 import com.GDT.Model.ProjectInfor;
+import com.GDT.Model.SchoolManageUser;
+import com.GDT.Model.SchoolParams;
 
 /*
  * 课题的审核管理servlet类
@@ -103,6 +105,20 @@ public class ProjectAuditServlet extends HttpServlet {
 			request.setAttribute("projectInfor", projectInfor);
 			request.setAttribute("auditInfor", auditInfor);
 			request.getRequestDispatcher("SchoolAdmin/auditInforShow.jsp").forward(request, response);
-		}
+		}if(type.equals("query_school_params")){//获取学校参数信息
+            int userId = Integer.parseInt((String)session.getAttribute("user_id"));
+
+            UserFactoryInterface factory = new UserFactory();
+            ManageSUserInterface manageCL = factory.createManageSUserCL();
+            SchoolManageUser user = manageCL.queryUserInfo(userId);
+
+            SchoolManageFactoryInterface manageFactory = new SchoolManageFactory();
+            SchoolParamsInterface paramsCL = manageFactory.createSchoolParamsCL();
+
+            SchoolParams schoolParams = paramsCL.querySchoolParams(user.getSchoolId());
+
+            request.setAttribute("schoolParams", schoolParams);
+            request.getRequestDispatcher("/SchoolAdmin/auditRules.jsp").forward(request, response);
+        }
 	}
 }

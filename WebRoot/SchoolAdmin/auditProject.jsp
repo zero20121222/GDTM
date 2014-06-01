@@ -152,8 +152,7 @@ proStageFrameObj.prototype.createFrame = function(stageInfor , stageNum){//创�
   							+"<tr><td align='right'>&nbsp;</td></tr>"
   							+"<tr><td align='right'>&nbsp;</td></tr>"
   							+"<tr><td height='25px' align='right'>阶段资料：</td>"
-  							+"<td><a class='downStageFile' title='阶段文件下载' href='"+downPath+"'>"+(stageInfor.stageFiles != "null" ? stageInfor.stageFiles : "")+"</a></td>"
-    						+"<td align='right'>&nbsp;</td><td>&nbsp;</td></tr></table>";
+  							+"<td colspan='3'><a class='downStageFile' title='阶段文件下载' href='"+downPath+"'>"+(stageInfor.stageFiles != "null" ? stageInfor.stageFiles : "")+"</a></td></tr></table>";
     						
     var stageNumber = document.createElement("div");
     stageNumber.className = "stageNumber";

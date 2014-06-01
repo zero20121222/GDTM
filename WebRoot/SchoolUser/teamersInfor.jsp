@@ -177,15 +177,16 @@
 </style>
 <script>
 function init(){
-	if($("teamer_infors_out").offsetHeight < 300){
-		var iframe_name = "main_body";
-		var frame = parent.document.getElementById(iframe_name);
-		
-		frame.style.marginTop = 0;
-		frame.style.marginBottom = 0;
-		frame.style.height = document.body.clientHeight+ 150 + "px";
-	}else{
-		suit_Page();
+    suit_Page();
+	if($("teamer_infors_out").offsetHeight < 400){
+        var frame = parent.document.getElementById("main_body");
+
+        var winHeight = windowHeight() < 600 ? 686 : windowHeight();
+        var marginlength = (winHeight - (frame.offsetHeight+205))/2 + "px";
+
+        //是登入界面居中显示
+        frame.style.marginTop = marginlength;
+        frame.style.marginBottom = marginlength;
 	}
 }
 
